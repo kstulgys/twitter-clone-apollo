@@ -17,7 +17,7 @@ const store = createStore()
 // set up any dataSources our resolvers need
 const dataSources = () => ({
   movieAPI: new MovieAPI(),
-  userAPI: new UserAPI({ store }),
+  // userAPI: new UserAPI({ store }),
 })
 
 ////// the function that sets up the global context for each resolver, using the req
