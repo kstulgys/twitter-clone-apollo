@@ -16,8 +16,8 @@ const store = createStore()
 // store.User.create({ email: 'hahaha@hahaha.com' })
 // set up any dataSources our resolvers need
 const dataSources = () => ({
-  movieAPI: new MovieAPI(),
-  // userAPI: new UserAPI({ store }),
+  // movieAPI: new MovieAPI(),
+  userAPI: new UserAPI({ store }),
 })
 
 ////// the function that sets up the global context for each resolver, using the req
