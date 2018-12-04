@@ -33,7 +33,7 @@ const context = async ({ req }) => {
   return user && { user: { ...user._doc } }
 }
 
-// Set up Apollo Server //
+/// Set up Apollo Server //
 const server = new ApolloServer({
   typeDefs,
   resolvers,
