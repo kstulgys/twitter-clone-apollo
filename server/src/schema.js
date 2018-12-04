@@ -1,9 +1,9 @@
-const { gql } = require("apollo-server");
+const { gql } = require('apollo-server')
 
 const typeDefs = gql`
   type Query {
     listGenres: [Genre]!
-    listMoviesWithParameters(input: MovieInput): MoviesPage
+    # listMoviesWithParameters(input: MovieInput): MoviesPage
     listUsers: [User]!
     me: User
     infiniteScrollMovies(offset: Int, limit: Int): MoviesPage
@@ -60,6 +60,6 @@ const typeDefs = gql`
     watched: [Movie]!
     watchLater: [Movie]!
   }
-`;
+`
 
-module.exports = typeDefs;
+module.exports = typeDefs

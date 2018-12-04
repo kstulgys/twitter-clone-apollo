@@ -34,40 +34,40 @@ module.exports = {
       return { ...me, watched, watchLater }
     },
 
-    listMoviesWithParameters: async (
-      _,
-      {
-        input: {
-          genreId = 18,
-          yearMin = currentYear - 3,
-          yearMax = currentYear,
-          ratingMin = 7,
-          ratingMax = 10,
-          runtimeMin = 100,
-          runtimeMax = 180,
-          pageNum = 1,
-          pageSize = 5,
-        },
-      },
-      { dataSources },
-    ) => {
-      console.log('Im in genreId listMoviesWithParameters', genreId)
-      const allMovies = await dataSources.movieAPI.getMoviesWithParameters(
-        genreId,
-        yearMin,
-        yearMax,
-        ratingMin,
-        ratingMax,
-        runtimeMin,
-        runtimeMax,
-      )
-      console.log(allMovies)
-      const { movies, hasMore } = paginateResults(allMovies, pageNum, pageSize)
-      return {
-        movies,
-        hasMore,
-      }
-    },
+    //   listMoviesWithParameters: async (
+    //     _,
+    //     {
+    //       input: {
+    //         genreId = 18,
+    //         yearMin = currentYear - 3,
+    //         yearMax = currentYear,
+    //         ratingMin = 7,
+    //         ratingMax = 10,
+    //         runtimeMin = 100,
+    //         runtimeMax = 180,
+    //         pageNum = 1,
+    //         pageSize = 5,
+    //       },
+    //     },
+    //     { dataSources },
+    //   ) => {
+    //     console.log('Im in genreId listMoviesWithParameters', genreId)
+    //     const allMovies = await dataSources.movieAPI.getMoviesWithParameters(
+    //       genreId,
+    //       yearMin,
+    //       yearMax,
+    //       ratingMin,
+    //       ratingMax,
+    //       runtimeMin,
+    //       runtimeMax,
+    //     )
+    //     console.log(allMovies)
+    //     const { movies, hasMore } = paginateResults(allMovies, pageNum, pageSize)
+    //     return {
+    //       movies,
+    //       hasMore,
+    //     }
+    //   },
   },
   Mutation: {
     login: async (_, { email }, { dataSources }) => {
