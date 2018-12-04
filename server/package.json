@@ -5,11 +5,10 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon src/index.js",
-    "start:ci": "node src/index.js"
+    "start": "nodemon src/index.js"
   },
   "engines": {
-    "node": "10.10"
+    "node": "10.10.0"
   },
   "dependencies": {
     "apollo-datasource": "^0.1.3",
