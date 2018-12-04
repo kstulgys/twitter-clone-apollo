@@ -16,7 +16,7 @@ const store = createStore()
 // store.User.create({ email: 'hahaha@hahaha.com' })
 // set up any dataSources our resolvers need
 const dataSources = () => ({
-  // movieAPI: new MovieAPI(),
+  movieAPI: new MovieAPI(),
   userAPI: new UserAPI({ store }),
 })
 
