@@ -4,12 +4,12 @@
   "description": "tmdb-apollo-server",
   "main": "index.js",
   "scripts": {
+    "test": "jest",
     "start": "nodemon src/index.js",
-    "test": "jest --watch",
-    "deploy:dev": "git subtree push --prefix server heroku-server master"
+    "start:ci": "node src/index.js"
   },
   "engines": {
-    "node": "10.10.0"
+    "node": "10.x"
   },
   "dependencies": {
     "apollo-datasource": "^0.2.1",
