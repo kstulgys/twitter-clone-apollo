@@ -20,7 +20,7 @@ const dataSources = () => ({
   userAPI: new UserAPI({ store }),
 })
 
-//// the function that sets up the global context for each resolver, using the req
+////// the function that sets up the global context for each resolver, using the req
 const context = async ({ req }) => {
   // simple auth check on every request
   const auth = (req.headers && req.headers.authorization) || ''
