@@ -39,18 +39,16 @@ const server = new ApolloServer({
   resolvers,
   dataSources,
   context,
-  //   engine: {
-  //     apiKey: process.env.ENGINE_API_KEY,
-  //     ...internalEngineDemo,
-  //   },
+})
+
+server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`)
 })
 
 // Start our server if we're not in a test env.
 // if we're in a test env, we'll manually start it in a test
 // if (process.env.NODE_ENV !== 'test')
-server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`)
-})
+
 // export all the important pieces for integration/e2e tests to use
 // module.exports = {
 //   dataSources,
