@@ -11,7 +11,7 @@ const UserAPI = require('./datasources/user')
 
 //// const internalEngineDemo = require('./engine-demo');
 
-// creates a sequelize connection once. NOT for every request
+//// creates a sequelize connection once. NOT for every request
 const store = createStore()
 // store.User.create({ email: 'hahaha@hahaha.com' })
 // set up any dataSources our resolvers need
