@@ -9,7 +9,7 @@
     "start:ci": "node src/index.js"
   },
   "engines": {
-    "node": "10.x"
+    "node": "10.10"
   },
   "dependencies": {
     "apollo-datasource": "^0.2.1",
