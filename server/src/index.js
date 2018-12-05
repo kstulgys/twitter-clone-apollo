@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { ApolloServer, AuthenticationError } = require('apollo-server')
+const { ApolloServer } = require('apollo-server')
 const isEmail = require('isemail')
 
 const typeDefs = require('./schema')

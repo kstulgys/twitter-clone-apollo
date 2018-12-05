@@ -1,4 +1,3 @@
-require('dotenv').config()
 const ObjectId = require('mongoose').Types.ObjectId
 const mongoose = require('mongoose')
 const { User } = require('./user')
