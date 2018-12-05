@@ -1,6 +1,5 @@
 module.exports.paginateResults = (allMovies, offset, limit) => {
   let movies
-  // const skip = pageSize * (pageNum - 1)
 
   if (offset === 0) {
     movies = allMovies.slice(0, limit)
