@@ -9,18 +9,14 @@ const { createStore } = require('./models')
 const MovieAPI = require('./datasources/movie')
 const UserAPI = require('./datasources/user')
 
-///// const internalEngineDemo = require('./engine-demo');
-
-//// creates a sequelize connection once. NOT for every request
 const store = createStore()
-// store.User.create({ email: 'hahaha@hahaha.com' })
 // set up any dataSources our resolvers need
 const dataSources = () => ({
   movieAPI: new MovieAPI(),
   userAPI: new UserAPI({ store }),
 })
 
-////// the function that sets up the global context for each resolver, using the req
+// the function that sets up the global context for each resolver, using the req
 const context = async ({ req }) => {
   // simple auth check on every request
   const auth = (req.headers && req.headers.authorization) || ''
@@ -33,7 +29,7 @@ const context = async ({ req }) => {
   return user && { user: { ...user._doc } }
 }
 
-/// Set up Apollo Server //
+// Set up Apollo Server
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -44,20 +40,3 @@ const server = new ApolloServer({
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`)
 })
-
-// Start our server if we're not in a test env.
-// if we're in a test env, we'll manually start it in a test
-// if (process.env.NODE_ENV !== 'test')
-
-// export all the important pieces for integration/e2e tests to use
-// module.exports = {
-//   dataSources,
-//   context,
-//   typeDefs,
-//   resolvers,
-//   ApolloServer,
-//   LaunchAPI,
-//   UserAPI,
-//   store,
-//   server,
-// };
