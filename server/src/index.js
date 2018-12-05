@@ -1,6 +1,7 @@
-require('dotenv').config()
 const { ApolloServer } = require('apollo-server')
 const isEmail = require('isemail')
+
+if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
