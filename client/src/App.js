@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import debounce from 'lodash.debounce'
 // import logo from './logo.svg'
 import Navigation from './components/navigation'
 import MoviesList from './components/movie'
-
 export const ALL_MOVIES = gql`
   query infiniteScrollMovies($offset: Int) {
     infiniteScrollMovies(offset: $offset, limit: 16) {
@@ -14,23 +14,17 @@ export const ALL_MOVIES = gql`
         id
       }
       hasMore
+      newOffset
     }
   }
 `
 
 class App extends Component {
-  // state = {
-  //   offset: 16,
-  // }
-
-  fetchMoreData = (fetchMore, offset) => {
-    // let offset = 0
-    // offset += 16
-    // console.log(offset)
-    // this.setState(prev => ({ offset: prev.offset + 16 }))
+  fetchMoreData = (fetchMore, data) => {
+    console.log(data.infiniteScrollMovies.newOffset)
     fetchMore({
       variables: {
-        offset: offset,
+        offset: data.infiniteScrollMovies.newOffset,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev
@@ -52,19 +46,21 @@ class App extends Component {
         <Query query={ALL_MOVIES} notifyOnNetworkStatusChange={true} fetchPolicy="network-only">
           {({ data, loading, error, fetchMore }) => {
             if (error) return <h1>{error.message}</h1>
+            // const hasMore = await data.infiniteScrollMovies.hasMore
+            // const newOffset = await data.infiniteScrollMovies.newOffset
+            // console.log(hasMore)
 
-            window.onscroll = () => {
-              const hasMore = data && data.infiniteScrollMovies && data.infiniteScrollMovies.hasMore
-              const offset = data && data.infiniteScrollMovies && data.infiniteScrollMovies.after
-
+            window.onscroll = debounce(() => {
               if (
-                hasMore &&
+                data &&
+                data.infiniteScrollMovies &&
+                data.infiniteScrollMovies.hasMore &&
                 window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight
               ) {
                 console.log('YES!')
-                this.fetchMoreData(fetchMore, offset)
+                this.fetchMoreData(fetchMore, data)
               }
-            }
+            }, 350)
 
             return (
               <div>
