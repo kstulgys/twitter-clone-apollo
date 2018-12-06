@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 const ObjectId = require('mongoose').Types.ObjectId
-const { User } = require('./user')
+const User = require('./user')
 
 ObjectId.prototype.valueOf = function() {
   return this.toString()
 }
 
-module.exports.createStore = () => {
+const createStore = () => {
   mongoose.connect(
     process.env.MONGO_DB,
     { useNewUrlParser: true },
@@ -17,3 +17,5 @@ module.exports.createStore = () => {
 
   return { User }
 }
+
+module.exports = createStore

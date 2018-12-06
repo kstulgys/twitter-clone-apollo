@@ -1,26 +1,16 @@
 const { DataSource } = require('apollo-datasource')
 const isEmail = require('isemail')
 const { AuthenticationError } = require('apollo-server')
+const createStore = require('../models')
+
 class UserAPI extends DataSource {
-  constructor({ store }) {
+  constructor() {
     super()
-    this.store = store
+    this.store = createStore()
   }
 
-  /**
-   * This is a function that gets called by ApolloServer when being setup.
-   * This function gets called with the datasource config including things
-   * like caches and context. We'll assign this.context to the request context
-   * here, so we can know about the user making requests
-   */
-  initialize(config) {
-    this.context = config.context
-  }
-
-  // get current user from the context
-  getCurrentUser() {
-    let user = this.context && this.context.user
-    return user
+  async getCurrentUser({ user }) {
+    return await this.store.User.findById(user._id)
   }
 
   // get current user from the context or throw error
@@ -44,11 +34,7 @@ class UserAPI extends DataSource {
     let user = this.getCurrentUser()
     if (user) return user
     if (!email || !isEmail.validate(email)) throw new Error('Sorry, this email is not valid! :(')
-    user = await this.store.User.findOneAndUpdate(
-      { email },
-      { email, avatar: `https://api.adorable.io/avatars/285/${email}.io.png` },
-      { upsert: true, new: true },
-    )
+    user = await this.store.User.findOneAndUpdate({ email }, { email }, { upsert: true, new: true })
     return user && user
   }
 

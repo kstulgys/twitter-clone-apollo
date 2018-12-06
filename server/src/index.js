@@ -1,19 +1,17 @@
 require('dotenv').config()
+
 const { ApolloServer } = require('apollo-server')
 const isEmail = require('isemail')
 
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
-const { createStore } = require('./models')
-
 const MovieAPI = require('./datasources/movie')
 const UserAPI = require('./datasources/user')
 
-const store = createStore()
 // set up any dataSources our resolvers need
 const dataSources = () => ({
   movieAPI: new MovieAPI(),
-  userAPI: new UserAPI({ store }),
+  userAPI: new UserAPI(),
 })
 
 // the function that sets up the global context for each resolver, using the req
@@ -26,7 +24,7 @@ const context = async ({ req }) => {
   // find a user by their email
   let user = await store.User.findOne({ email })
 
-  return user && { user: { ...user._doc } }
+  return { user: user && { ...user._doc } }
 }
 
 // Set up Apollo Server

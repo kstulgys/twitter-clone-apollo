@@ -12,4 +12,9 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true, strict: true },
 )
 
-module.exports = { User: mongoose.model('user', UserSchema) }
+UserSchema.post('save', function(doc, next) {
+  doc.update({ avatar: `https://api.adorable.io/avatars/285/${doc.email}.io.png` })
+})
+
+const User = mongoose.model('user', UserSchema)
+module.exports = User

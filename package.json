@@ -1,0 +1,21 @@
+{
+  "name": "tmdb-apollo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy:heroku": "git subtree push --prefix server heroku-server master"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kstulgys/tmdb-apollo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kstulgys/tmdb-apollo/issues"
+  },
+  "homepage": "https://github.com/kstulgys/tmdb-apollo#readme"
+}
