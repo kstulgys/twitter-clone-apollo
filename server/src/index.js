@@ -2,12 +2,13 @@ require('dotenv').config()
 
 const { ApolloServer } = require('apollo-server')
 const isEmail = require('isemail')
-
+const createStore = require('./models')
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
 const MovieAPI = require('./datasources/movie')
 const UserAPI = require('./datasources/user')
 
+const store = createStore()
 // set up any dataSources our resolvers need
 const dataSources = () => ({
   movieAPI: new MovieAPI(),

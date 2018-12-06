@@ -30,7 +30,7 @@ class UserAPI extends DataSource {
   }
 
   // get current user from the context or create a new user in the database
-  async findOrCreateUser(email = '') {
+  async findOrCreateUser(email) {
     let user = this.getCurrentUser()
     if (user) return user
     if (!email || !isEmail.validate(email)) throw new Error('Sorry, this email is not valid! :(')
