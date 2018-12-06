@@ -12,10 +12,11 @@ module.exports = {
   Query: {
     infiniteScrollMovies: async (_, { offset = 0, limit = 20 }, { dataSources }) => {
       let allMovies = await dataSources.movieAPI.getAllMovies()
-      const { movies, hasMore } = paginateResults(allMovies, offset, limit)
+      const { movies, hasMore, newOffset } = paginateResults(allMovies, offset, limit)
       return {
         movies,
         hasMore,
+        newOffset,
       }
     },
     ///

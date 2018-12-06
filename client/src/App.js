@@ -6,8 +6,8 @@ import Navigation from './components/navigation'
 import MoviesList from './components/movie'
 
 export const ALL_MOVIES = gql`
-  query infiniteScrollMovies($pageNum: Int) {
-    infiniteScrollMovies(pageNum: $pageNum, pageSize: 12) {
+  query infiniteScrollMovies($offset: Int) {
+    infiniteScrollMovies(offset: $offset, limit: 16) {
       movies {
         image_url
         title
@@ -19,39 +19,31 @@ export const ALL_MOVIES = gql`
 `
 
 class App extends Component {
-  state = {
-    pageNum: 2,
-  }
+  // state = {
+  //   offset: 16,
+  // }
 
-  fetchMoreData = (fetchMore, data) => {
-    const hasMore = data && data.infiniteScrollMovies && data.infiniteScrollMovies.hasMore
-    window.onscroll = () => {
-      console.log('hasMore?', hasMore)
-      if (
-        hasMore &&
-        window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight
-      ) {
-        // Do awesome stuff like loading more content!
+  fetchMoreData = (fetchMore, offset) => {
+    // let offset = 0
+    // offset += 16
+    // console.log(offset)
+    // this.setState(prev => ({ offset: prev.offset + 16 }))
+    fetchMore({
+      variables: {
+        offset: offset,
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev
 
-        fetchMore({
-          variables: {
-            pageNum: this.state.pageNum,
+        return {
+          ...fetchMoreResult,
+          infiniteScrollMovies: {
+            ...fetchMoreResult.infiniteScrollMovies,
+            movies: [...prev.infiniteScrollMovies.movies, ...fetchMoreResult.infiniteScrollMovies.movies],
           },
-          updateQuery: (prev, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prev
-            this.setState(prev => ({ pageNum: prev.pageNum + 1 }))
-            return {
-              ...fetchMoreResult,
-              infiniteScrollMovies: {
-                ...fetchMoreResult.infiniteScrollMovies,
-                movies: [...prev.infiniteScrollMovies.movies, ...fetchMoreResult.infiniteScrollMovies.movies],
-              },
-            }
-          },
-        })
-      }
-      return
-    }
+        }
+      },
+    })
   }
 
   render() {
@@ -60,9 +52,20 @@ class App extends Component {
         <Query query={ALL_MOVIES} notifyOnNetworkStatusChange={true} fetchPolicy="network-only">
           {({ data, loading, error, fetchMore }) => {
             if (error) return <h1>{error.message}</h1>
-            // console.log('hasMore', hasMore)
-            // const movies = data.infiniteScrollMovies && data.infiniteScrollMovies.movies
-            this.fetchMoreData(fetchMore, data)
+
+            window.onscroll = () => {
+              const hasMore = data && data.infiniteScrollMovies && data.infiniteScrollMovies.hasMore
+              const offset = data && data.infiniteScrollMovies && data.infiniteScrollMovies.after
+
+              if (
+                hasMore &&
+                window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight
+              ) {
+                console.log('YES!')
+                this.fetchMoreData(fetchMore, offset)
+              }
+            }
+
             return (
               <div>
                 {data &&
