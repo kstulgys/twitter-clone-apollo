@@ -12,6 +12,7 @@ const typeDefs = gql`
   type MoviesPage {
     movies: [Movie]!
     hasMore: Boolean
+    newOffset: Int
   }
 
   type Mutation {
