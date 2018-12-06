@@ -9,8 +9,8 @@ class UserAPI extends DataSource {
     this.store = createStore()
   }
 
-  async getCurrentUser({ user }) {
-    return await this.store.User.findById(user._id)
+  async getCurrentUser({ _id }) {
+    return await this.store.User.findById(_id)
   }
 
   // get current user from the context or throw error
