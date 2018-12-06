@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "gitwip": "git add . && git commit -m 'wip' ",
+    "gitd": "git add . && git commit -m 'wip' && git subtree push --prefix server heroku-server master",
     "deploy:heroku": "git subtree push --prefix server heroku-server master"
   },
   "repository": {
