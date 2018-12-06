@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ss": "cd server && nodemon index.js",
-    "gitwip": "git add . && git commit -m 'wip' ",
+    "gitwip": "git add . && git commit -m 'wip' && git push ",
     "gitd": "git add . && git commit -m 'wip' && git subtree push --prefix server heroku-server master",
     "deploy:heroku": "git subtree push --prefix server heroku-server master"
   },
