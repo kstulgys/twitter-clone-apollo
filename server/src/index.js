@@ -24,7 +24,7 @@ const context = async ({ req }) => {
   if (!isEmail.validate(email)) return { user: null }
   // find a user by their email
   let user = await store.User.findOne({ email })
-
+  // console.log('user from context', user)
   return { user: user && { ...user._doc } }
 }
 
@@ -34,7 +34,7 @@ const server = new ApolloServer({
   resolvers,
   dataSources,
   context,
-  introspection: true,
+  // introspection: true,
 })
 
 server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
