@@ -20,8 +20,21 @@ export const ALL_MOVIES = gql`
 `
 
 class App extends Component {
+  isBottom = (fetchMore, data) => {
+    window.onscroll = () => {
+      if (
+        data &&
+        data.infiniteScrollMovies &&
+        data.infiniteScrollMovies.hasMore &&
+        window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight
+      ) {
+        console.log('YES!')
+        this.fetchMoreData(fetchMore, data)
+      }
+    }
+  }
+
   fetchMoreData = (fetchMore, data) => {
-    console.log(data.infiniteScrollMovies.newOffset)
     fetchMore({
       variables: {
         offset: data.infiniteScrollMovies.newOffset,
@@ -46,22 +59,7 @@ class App extends Component {
         <Query query={ALL_MOVIES} notifyOnNetworkStatusChange={true} fetchPolicy="network-only">
           {({ data, loading, error, fetchMore }) => {
             if (error) return <h1>{error.message}</h1>
-            // const hasMore = await data.infiniteScrollMovies.hasMore
-            // const newOffset = await data.infiniteScrollMovies.newOffset
-            // console.log(hasMore)
-
-            window.onscroll = debounce(() => {
-              if (
-                data &&
-                data.infiniteScrollMovies &&
-                data.infiniteScrollMovies.hasMore &&
-                window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight
-              ) {
-                console.log('YES!')
-                this.fetchMoreData(fetchMore, data)
-              }
-            }, 350)
-
+            this.isBottom(fetchMore, data)
             return (
               <div>
                 {data &&
@@ -88,12 +86,11 @@ class App extends Component {
             )
           }}
         </Query>
-
-        <Navigation />
       </div>
     )
   }
 }
+// <Navigation />
 
 export default App
 
