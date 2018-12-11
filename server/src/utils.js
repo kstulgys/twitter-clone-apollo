@@ -1,4 +1,4 @@
-module.exports.paginateResults = (allMovies, offset, limit) => {
+export default (allMovies, offset, limit) => {
   let movies
   let newOffset = null
   if (offset === 0) {

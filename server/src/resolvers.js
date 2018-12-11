@@ -1,9 +1,9 @@
-const { paginateResults } = require('./utils')
+import { paginateResults } from './utils'
 // const pageNum = 1
 // const pageSize = 20
 const currentYear = new Date().getFullYear()
 
-module.exports = {
+export default {
   Movie: {
     watchedBy: async (listMovie, __, { dataSources }) => {
       return await dataSources.userAPI.getWatchedByUsers(listMovie.id)

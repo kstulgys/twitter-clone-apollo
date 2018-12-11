@@ -1,21 +1,21 @@
-import { User } from '../types/user/user.model'
-import cuid from 'cuid'
+// import { User } from '../types/user/user.model'
+// import cuid from 'cuid'
 
-export const newApiKey = () => {
-  return cuid()
-}
+// export const newApiKey = () => {
+//   return cuid()
+// }
 
-export const authenticate = async req => {
-  const apiKey = req.headers.authorization
+// export const authenticate = async req => {
+//   const apiKey = req.headers.authorization
 
-  if (!apiKey) {
-    return
-  }
+//   if (!apiKey) {
+//     return
+//   }
 
-  const user = await User.findOne({ apiKey })
-    .select('-password')
-    .lean()
-    .exec()
+//   const user = await User.findOne({ apiKey })
+//     .select('-password')
+//     .lean()
+//     .exec()
 
-  return user
-}
+//   return user
+// }
