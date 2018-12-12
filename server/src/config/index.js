@@ -1,7 +1,7 @@
 require('dotenv').config()
 import { merge } from 'lodash'
 const env = process.env.NODE_ENV || 'development'
-// base
+// / base
 const baseConfig = {
   env,
   isDev: env === 'development',
