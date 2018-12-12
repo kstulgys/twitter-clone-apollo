@@ -17,7 +17,6 @@ export const start = async () => {
   //   }
   // `
 
-
   const rootSchema = gql`
     type Query {
       _: Boolean
@@ -32,8 +31,8 @@ export const start = async () => {
   const server = new ApolloServer({
     typeDefs: [rootSchema, userSchema, movieSchema],
     resolvers: [userResolvers, movieResolvers],
-    dataSources = () => ({
-      movieAPI: new MovieAPI()
+    dataSources: () => ({
+      movieAPI: new MovieAPI(),
     }),
     async context({ req }) {
       const user = await authenticate(req)
