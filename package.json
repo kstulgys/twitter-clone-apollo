@@ -6,7 +6,8 @@
     "build": "cd server && ./node_modules/.bin/babel src -d dist",
     "gitwip": "git add . && git commit -m 'wip' && git push",
     "gitd": "git subtree push --prefix server heroku-server master",
-    "deploy": "yarn build && yarn gitwip && yarn gitd"
+    "deploy": "yarn build && yarn gitwip && yarn gitd",
+    "heroku-postbuild": "cd .. && yarn build"
   },
   "repository": {
     "type": "git",
