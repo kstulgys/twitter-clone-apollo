@@ -4,14 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/index.js",
-    "clean": "rm -rf build && mkdir build",
-    "build-babel": "babel -d ./build ./src -s",
-    "build": "npm run clean && npm run build-babel",
-    "start": "npm run build && node ./build/index.js"
-  },
-  "engines": {
-    "node": "10.10.0"
+    "start": "nodemon --exec babel-node src/index.js",
+    "deploy": "now --dotenv=.env"
   },
   "dependencies": {
     "apollo-datasource": "^0.1.3",

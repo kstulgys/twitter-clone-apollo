@@ -8,6 +8,7 @@
     "gitwip": "git add . && git commit -m 'wip' && git push ",
     "gitd": "git add . && git commit -m 'wip' && git subtree push --prefix server heroku-server master",
     "deploy:heroku": "git subtree push --prefix server heroku-server master"
+  
   },
   "repository": {
     "type": "git",
