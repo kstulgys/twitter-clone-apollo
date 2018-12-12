@@ -74,7 +74,9 @@ const start = exports.start = (() => {
     });
 
     yield (0, _db.connect)(_config2.default.dbUrl);
-    const { url } = yield server.listen({ port: _config2.default.port });
+    const { url } = yield server.listen({
+      port: process.env.PORT || _config2.default.port
+    });
 
     console.log(`GQL server ready at ${url}`);
   });

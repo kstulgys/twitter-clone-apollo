@@ -47,7 +47,9 @@ export const start = async () => {
   });
 
   await connect(config.dbUrl);
-  const { url } = await server.listen({ port: config.port });
+  const { url } = await server.listen({
+    port: process.env.PORT || config.port
+  });
 
   console.log(`GQL server ready at ${url}`);
 };
