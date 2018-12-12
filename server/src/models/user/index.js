@@ -1,6 +1,6 @@
 // import { gql } from 'apollo-server'
 
-// import userSchema from './user.schema'
+//// import userSchema from './user.schema'
 
 // const linkSchema = gql`
 //   type Query {
