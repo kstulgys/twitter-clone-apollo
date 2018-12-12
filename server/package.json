@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "10.10.0"
+  },
   "scripts": {
     "dev": "nodemon --exec babel-node src/index.js",
     "build": "./node_modules/.bin/babel src/*.js -d dist",
