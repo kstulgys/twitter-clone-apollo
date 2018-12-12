@@ -1,10 +1,10 @@
-require('dotenv').config()
-import { ApolloServer, gql } from 'apollo-server'
-import { connect } from './db'
-import config from './config'
-import { authenticate } from './utils/auth'
-import userSchema from './models/user/user.schema'
-import userResolvers from './models/user/user.resolvers'
+require("dotenv").config();
+import { ApolloServer, gql } from "apollo-server";
+import { connect } from "./db";
+import config from "./config";
+import { authenticate } from "./utils/auth";
+import userSchema from "./models/user/user.schema";
+import userResolvers from "./models/user/user.resolvers";
 
 // import typeDefs from './schema'
 // import resolvers from './resolvers'
@@ -34,20 +34,20 @@ export const start = async () => {
     type Subscription {
       _: Boolean
     }
-  `
+  `;
   const server = new ApolloServer({
     typeDefs: [rootSchema, userSchema],
     resolvers: userResolvers,
     // dataSources,
     async context({ req }) {
-      const user = await authenticate(req)
-      return { user }
+      const user = await authenticate(req);
+      return { user };
     },
-    introspection: true,
-  })
+    introspection: true
+  });
 
-  await connect(config.dbUrl)
-  const { url } = await server.listen({ port: process.env.PORT || config.port })
+  await connect(config.dbUrl);
+  const { url } = await server.listen({ port: config.port });
 
-  console.log(`GQL server ready at ${url}`)
-}
+  console.log(`GQL server ready at ${url}`);
+};
