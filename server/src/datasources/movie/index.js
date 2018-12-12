@@ -1,6 +1,46 @@
-// // import { RESTDataSource } from "apollo-datasource-rest";
-// const { RESTDataSource } = require("apollo-datasource-rest");
-// // this.baseURL = `https://api.themoviedb.org/3/movie/550?api_key=d0d718f69479577b4a5732c80cbb43d8`;
+const { RESTDataSource } = require('apollo-datasource-rest')
+import MovieList from './../../../../client/src/components/movie/index'
+
+class MoviesAPI extends RESTDataSource {
+  constructor() {
+    super()
+    this.baseURL = 'https://api.themoviedb.org/3'
+  }
+
+  // add api params to each request
+  // e.g. BASE_URL/movie/1/credits?api_key=4u859034&include_adult=false
+  willSendRequest(request) {
+    request.params.set('api_key', 'd0d718f69479577b4a5732c80cbb43d8')
+    request.params.set('include_adult', true)
+  }
+
+  async getAllGenres() {
+    const { genres } = await this.get(`/genre/movie/list`)
+    return genres
+  }
+  //   async getCastByMovie(id) {
+  //     const res = await this.get(`/movie/${id}/credits`)
+  //     return res ? res.cast : []
+  //   }
+
+  //   getMovieById(id) {
+  //     return this.get(`movie/${id}`)
+  //   }
+
+  //   async getMovies({ sort, page }) {
+  //     let sortParam = null
+  //     if (sort === 'POPULARITY') sortParam = 'popularity.desc'
+  //     else if (sort === 'RELEASE_DATE') sortParam = 'release_date.desc'
+
+  //     const res = await this.get('/discover/movie', {
+  //       params: { page, sort_by: sortParam },
+  //     })
+
+  //     return res ? res.results : []
+  //   }
+}
+
+export default MoviesAPI
 
 // class MovieAPI extends RESTDataSource {
 //   constructor() {
@@ -102,40 +142,3 @@
 //     return await Promise.all(res);
 //   }
 // }
-// module.exports = MovieAPI;
-
-// //   this.baseURL = `https://api.themoviedb.org/3/discover/movie?api_key=${
-// //     process.env.TMDB_API_KEY
-// //   }&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=10`
-// // }
-
-// // `&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1`
-// //   launchReducer(launch) {
-// //     return {
-// //       id: launch.flight_number || 0,
-// //       cursor: `${launch.launch_date_unix}`,
-// //       site: launch.launch_site && launch.launch_site.site_name,
-// //       mission: {
-// //         name: launch.mission_name,
-// //         missionPatchSmall: launch.links.mission_patch_small,
-// //         missionPatchLarge: launch.links.mission_patch
-// //       },
-// //       rocket: {
-// //         id: launch.rocket.rocket_id,
-// //         name: launch.rocket.rocket_name,
-// //         type: launch.rocket.rocket_type
-// //       }
-// //     };
-// //   }
-
-// //   async getLaunchById({ launchId }) {
-// //     const res = await this.get("launches", { flight_number: launchId });
-// //     return this.launchReducer(res[0]);
-// //   }
-
-// //   getLaunchesByIds({ launchIds }) {
-// //     return Promise.all(
-// //       launchIds.map(launchId => this.getLaunchById({ launchId }))
-// //     );
-// //   }
-// // }

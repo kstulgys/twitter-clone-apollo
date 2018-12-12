@@ -1,21 +1,13 @@
-require("dotenv").config();
-import { ApolloServer, gql } from "apollo-server";
-import { connect } from "./db";
-import config from "./config";
-import { authenticate } from "./utils/auth";
-import userSchema from "./models/user/user.schema";
-import userResolvers from "./models/user/user.resolvers";
-
-// import typeDefs from './schema'
-// import resolvers from './resolvers'
-// import MovieAPI from './datasources/movie'
-// import UserAPI from './datasources/user'
-// const store = createStore()
-// set up any dataSources our resolvers need
-// const dataSources = () => ({
-//   movieAPI: new MovieAPI(),
-//   userAPI: new UserAPI(),
-// })
+require('dotenv').config()
+import { ApolloServer, gql } from 'apollo-server'
+import { connect } from './db'
+import config from './config'
+import { authenticate } from './utils/auth'
+import userSchema from './models/user/user.schema'
+import userResolvers from './models/user/user.resolvers'
+import movieSchema from './datasources/movie/movie.schema'
+import movieResolvers from './datasources/movie/movie.resolvers'
+import MovieAPI from './datasources/movie'
 
 export const start = async () => {
   // const rootSchema = `
@@ -24,6 +16,8 @@ export const start = async () => {
   //     mutation: Mutation
   //   }
   // `
+
+
   const rootSchema = gql`
     type Query {
       _: Boolean
@@ -34,22 +28,24 @@ export const start = async () => {
     type Subscription {
       _: Boolean
     }
-  `;
+  `
   const server = new ApolloServer({
-    typeDefs: [rootSchema, userSchema],
-    resolvers: userResolvers,
-    // dataSources,
+    typeDefs: [rootSchema, userSchema, movieSchema],
+    resolvers: [userResolvers, movieResolvers],
+    dataSources = () => ({
+      movieAPI: new MovieAPI()
+    }),
     async context({ req }) {
-      const user = await authenticate(req);
-      return { user };
+      const user = await authenticate(req)
+      return { user }
     },
-    introspection: true
-  });
+    introspection: true,
+  })
 
-  await connect(config.dbUrl);
+  await connect(config.dbUrl)
   const { url } = await server.listen({
-    port: process.env.PORT || config.port
-  });
+    port: process.env.PORT || config.port,
+  })
 
-  console.log(`GQL server ready at ${url}`);
-};
+  console.log(`GQL server ready at ${url}`)
+}
