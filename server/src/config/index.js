@@ -1,9 +1,11 @@
+require('dotenv').config()
 import { merge } from 'lodash'
 const env = process.env.NODE_ENV || 'development'
 // base
 const baseConfig = {
   env,
   isDev: env === 'development',
+  isProd: env === 'production',
   isTest: env === 'testing',
 }
 
