@@ -8,8 +8,11 @@
   },
   "scripts": {
     "dev": "nodemon --exec babel-node src/index.js",
-    "build": "./node_modules/.bin/babel src/*.js -d dist",
-    "start": "node ./dist/src/index.js"
+    "build": "./node_modules/.bin/babel src/*.js -d app/dist",
+    "start": "node ./dist/src/index.js",
+    "gitwip": "git add . && git commit -m 'wip' && git push",
+    "gitd": "git subtree push --prefix server heroku-server master",
+    "deploy": "yarn build && yarn gitwip && yarn gitd"
   },
   "dependencies": {
     "apollo-datasource": "^0.1.3",
