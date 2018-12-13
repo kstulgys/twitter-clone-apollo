@@ -31,11 +31,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 // }
 
 const watchedBy = (() => {
-  var _ref = _asyncToGenerator(function* (movie, args, { dataSources }) {
-    return yield _user.User.find({ watched: { $in: [movie.id] } }).lean().exec();
+  var _ref = _asyncToGenerator(function* (movie, args) {
+    return yield _user.User.find({ watched: { $in: [movie.id] } });
   });
 
-  return function watchedBy(_x, _x2, _x3) {
+  return function watchedBy(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 })();
@@ -44,7 +44,7 @@ const getMoviesById = (() => {
     return yield dataSources.movieAPI.getMoviesById(ids);
   });
 
-  return function getMoviesById(_x4, _x5, _x6) {
+  return function getMoviesById(_x3, _x4, _x5) {
     return _ref2.apply(this, arguments);
   };
 })();
@@ -54,7 +54,7 @@ const getMovies = (() => {
     return yield dataSources.movieAPI.getMovies(sort_by, page);
   });
 
-  return function getMovies(_x7, _x8, _x9) {
+  return function getMovies(_x6, _x7, _x8) {
     return _ref3.apply(this, arguments);
   };
 })();
@@ -63,7 +63,7 @@ const getGenres = (() => {
     return yield dataSources.movieAPI.getGenres();
   });
 
-  return function getGenres(_x10, _x11, _x12) {
+  return function getGenres(_x9, _x10, _x11) {
     return _ref4.apply(this, arguments);
   };
 })();

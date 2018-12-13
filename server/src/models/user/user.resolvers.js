@@ -2,11 +2,15 @@ import { User } from './user.model'
 import { AuthenticationError } from 'apollo-server'
 // import { newApiKey } from '../../utils/auth'
 
-const me = async (_, args, ctx) => {
-  if (!ctx.user) {
+const requireAuth = user => {
+  if (!user) {
     throw new AuthenticationError()
   }
-  return await ctx.user
+}
+
+const me = async (_, args, { user }) => {
+  await requireAuth(user)
+  return await user
 }
 
 const listUsers = async (_, args) => {
@@ -15,37 +19,49 @@ const listUsers = async (_, args) => {
     .exec()
 }
 
-const addWatched = async (_, { id }, ctx) => {
-  if (!ctx.user) {
-    throw new AuthenticationError()
-  }
-  await User.findByIdAndUpdate(ctx.user._id, { $pull: { watchLater: id }, $addToSet: { watched: id } }, { new: true })
+const addWatched = async (_, { id }, { user }) => {
+  await requireAuth(user)
+
+  await User.findByIdAndUpdate(
+    user._id,
+    { $pull: { watchLater: id }, $addToSet: { watched: id } },
+    { new: true }
+  )
     .lean()
     .exec()
   return id
 }
 
-const addWatchLater = async (_, { id }, ctx) => {
-  if (!ctx.user) {
-    throw new AuthenticationError()
-  }
-  await User.findByIdAndUpdate(ctx.user._id, { $pull: { watched: id }, $addToSet: { watchLater: id } }, { new: true })
+const addWatchLater = async (_, { id }, { user }) => {
+  await requireAuth(user)
+
+  await User.findByIdAndUpdate(
+    user._id,
+    { $pull: { watched: id }, $addToSet: { watchLater: id } },
+    { new: true }
+  )
   return id
 }
 
-const removeWatched = async (_, { id }, ctx) => {
-  if (!ctx.user) {
-    throw new AuthenticationError()
-  }
-  await User.findByIdAndUpdate(ctx.user._id, { $pull: { watched: id } }, { new: true })
+const removeWatched = async (_, { id }, { user }) => {
+  await requireAuth(user)
+
+  await User.findByIdAndUpdate(
+    user._id,
+    { $pull: { watched: id } },
+    { new: true }
+  )
   return id
 }
 
-const removeWatchLater = async (_, { id }, ctx) => {
-  if (!ctx.user) {
-    throw new AuthenticationError()
-  }
-  await User.findByIdAndUpdate(ctx.user._id, { $pull: { watchLater: id } }, { new: true })
+const removeWatchLater = async (_, { id }, { user }) => {
+  await requireAuth(user)
+
+  await User.findByIdAndUpdate(
+    user._id,
+    { $pull: { watchLater: id } },
+    { new: true }
+  )
   return id
 }
 
@@ -61,13 +77,13 @@ const login = async (_, { email }) => {
 export default {
   Query: {
     me,
-    listUsers,
+    listUsers
   },
   Mutation: {
     login,
     addWatched,
     addWatchLater,
     removeWatched,
-    removeWatchLater,
-  },
+    removeWatchLater
+  }
 }
