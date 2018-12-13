@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "babel server/src --out-dir dist",
+    "build": "babel server/src --out-dir server/dist",
     "gitwip": "git add . && git commit -m 'wip' && git push",
     "gitd": "git subtree push --prefix server heroku-server master",
     "deploy": "yarn gitwip && yarn build && yarn gitd"

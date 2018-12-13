@@ -9,11 +9,13 @@ var _apolloServer = require('apollo-server');
 
 var _db = require('./db');
 
+var _lodash = require('lodash');
+
+var _auth = require('./utils/auth');
+
 var _config = require('./config');
 
 var _config2 = _interopRequireDefault(_config);
-
-var _auth = require('./utils/auth');
 
 var _user = require('./models/user/user.schema');
 
@@ -62,7 +64,7 @@ const start = exports.start = (() => {
   `;
     const server = new _apolloServer.ApolloServer({
       typeDefs: [rootSchema, _user2.default, _movie2.default],
-      resolvers: [_user4.default, _movie4.default],
+      resolvers: (0, _lodash.merge)({}, _user4.default, _movie4.default),
       dataSources: function () {
         return {
           movieAPI: new _movie6.default()
@@ -79,7 +81,7 @@ const start = exports.start = (() => {
 
     yield (0, _db.connect)(_config2.default.dbUrl);
     const { url } = yield server.listen({
-      port: process.env.PORT || _config2.default.port
+      port: _config2.default.port
     });
 
     console.log(`GQL server ready at ${url}`);

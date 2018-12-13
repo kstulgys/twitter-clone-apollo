@@ -7,14 +7,6 @@ Object.defineProperty(exports, "__esModule", {
 var _apolloServer = require('apollo-server');
 
 exports.default = _apolloServer.gql`
-  type User {
-    _id: ID!
-    email: String!
-    avatar: String!
-    watched: [ID]!
-    watchLater: [ID]!
-  }
-
   type Movie {
     vote_count: Int
     id: ID
@@ -49,9 +41,11 @@ exports.default = _apolloServer.gql`
     name: String
   }
 
-  type extend Query {
+  extend type Query {
     # listMoviesWithParameters(input: MovieInput): MoviesPage
-    listGenres: [Genre]!
-    infiniteScrollMovies(offset: Int, limit: Int): MoviesPage
+    getGenres: [Genre]!
+    getMoviesById(ids: [ID]): [Movie]!
+    getMovies(sort_by: String, page: Int): [Movie]!
+    # infiniteScrollMovies(offset: Int, limit: Int): MoviesPage
   }
 `;

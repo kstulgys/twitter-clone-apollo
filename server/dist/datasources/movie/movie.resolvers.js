@@ -29,21 +29,40 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //     newOffset,
 //   }
 // }
-
-const getAllGenres = (() => {
-  var _ref = _asyncToGenerator(function* (_, args, { dataSources }) {
-    return yield dataSources.movieAPI.getAllGenres();
+const getMoviesById = (() => {
+  var _ref = _asyncToGenerator(function* (_, { ids }, { dataSources }) {
+    return yield dataSources.movieAPI.getMoviesById(ids);
   });
 
-  return function getAllGenres(_x, _x2, _x3) {
+  return function getMoviesById(_x, _x2, _x3) {
     return _ref.apply(this, arguments);
+  };
+})();
+
+const getMovies = (() => {
+  var _ref2 = _asyncToGenerator(function* (_, { sort_by, page }, { dataSources }) {
+    return yield dataSources.movieAPI.getMovies(sort_by, page);
+  });
+
+  return function getMovies(_x4, _x5, _x6) {
+    return _ref2.apply(this, arguments);
+  };
+})();
+const getGenres = (() => {
+  var _ref3 = _asyncToGenerator(function* (_, args, { dataSources }) {
+    return yield dataSources.movieAPI.getGenres();
+  });
+
+  return function getGenres(_x7, _x8, _x9) {
+    return _ref3.apply(this, arguments);
   };
 })();
 
 exports.default = {
   Query: {
-    getAllGenres
-    // infiniteScrollMovies,
+    getGenres,
+    getMovies,
+    getMoviesById
   }
   //   Movie: {
   //     watchedBy,
