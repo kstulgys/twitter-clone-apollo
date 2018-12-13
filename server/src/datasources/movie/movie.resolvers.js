@@ -20,10 +20,8 @@ import { User } from '../../models/user/user.model'
 //   }
 // }
 
-const watchedBy = async (movie, args, { dataSources }) => {
+const watchedBy = async (movie, args) => {
   return await User.find({ watched: { $in: [movie.id] } })
-    .lean()
-    .exec()
 }
 const getMoviesById = async (_, { ids }, { dataSources }) => {
   return await dataSources.movieAPI.getMoviesById(ids)
