@@ -1,8 +1,9 @@
 require('dotenv').config()
 import { ApolloServer, gql } from 'apollo-server'
 import { connect } from './db'
-import config from './config'
+import { merge } from 'lodash'
 import { authenticate } from './utils/auth'
+import config from './config'
 import userSchema from './models/user/user.schema'
 import userResolvers from './models/user/user.resolvers'
 import movieSchema from './datasources/movie/movie.schema'
@@ -30,7 +31,7 @@ export const start = async () => {
   `
   const server = new ApolloServer({
     typeDefs: [rootSchema, userSchema, movieSchema],
-    resolvers: [userResolvers, movieResolvers],
+    resolvers: merge({}, userResolvers, movieResolvers),
     dataSources: () => ({
       movieAPI: new MovieAPI(),
     }),
@@ -43,7 +44,7 @@ export const start = async () => {
 
   await connect(config.dbUrl)
   const { url } = await server.listen({
-    port: process.env.PORT || config.port,
+    port: config.port,
   })
 
   console.log(`GQL server ready at ${url}`)

@@ -19,15 +19,22 @@ import { User } from '../../models/user/user.model'
 //     newOffset,
 //   }
 // }
+const getMoviesById = async (_, { ids }, { dataSources }) => {
+  return await dataSources.movieAPI.getMoviesById(ids)
+}
 
-const getAllGenres = async (_, args, { dataSources }) => {
-  return await dataSources.movieAPI.getAllGenres()
+const getMovies = async (_, { sort_by, page }, { dataSources }) => {
+  return await dataSources.movieAPI.getMovies(sort_by, page)
+}
+const getGenres = async (_, args, { dataSources }) => {
+  return await dataSources.movieAPI.getGenres()
 }
 
 export default {
   Query: {
-    getAllGenres,
-    // infiniteScrollMovies,
+    getGenres,
+    getMovies,
+    getMoviesById,
   },
   //   Movie: {
   //     watchedBy,
