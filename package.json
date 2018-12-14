@@ -18,5 +18,8 @@
 	"bugs": {
 		"url": "https://github.com/kstulgys/tmdb-apollo/issues"
 	},
-	"homepage": "https://github.com/kstulgys/tmdb-apollo#readme"
+	"homepage": "https://github.com/kstulgys/tmdb-apollo#readme",
+	"dependencies": {
+		"bcrypt-nodejs": "^0.0.3"
+	}
 }

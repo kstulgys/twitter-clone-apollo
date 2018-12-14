@@ -37,6 +37,10 @@ var _movie5 = require('./datasources/movie');
 
 var _movie6 = _interopRequireDefault(_movie5);
 
+var _user5 = require('./mocks/user');
+
+var _user6 = _interopRequireDefault(_user5);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -44,13 +48,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 require('dotenv').config();
 const start = exports.start = (() => {
   var _ref = _asyncToGenerator(function* () {
-    // const rootSchema = `
-    //   schema {
-    //     query: Query
-    //     mutation: Mutation
-    //   }
-    // `
-
     const rootSchema = _apolloServer.gql`
     type Query {
       _: Boolean
@@ -76,10 +73,12 @@ const start = exports.start = (() => {
           return { user };
         })();
       },
+
       introspection: true
     });
 
     yield (0, _db.connect)(_config2.default.dbUrl);
+    // await createFakeUsers()
     const { url } = yield server.listen({
       port: _config2.default.port
     });
@@ -91,3 +90,37 @@ const start = exports.start = (() => {
     return _ref.apply(this, arguments);
   };
 })();
+
+// playground: {
+//   settings: {
+//     'editor.reuseHeaders': true,
+//     'general.betaUpdates': false,
+//     'editor.theme': 'dark',
+//     'request.credentials': 'omit',
+//     'tracing.hideTracingResponse': true,
+//   },
+//   tabs: [
+//     {
+//       endpoint: 'http://localhost:4000',
+//       name: 'tab name 1',
+//       query: defaultQuery,
+//     },
+//   ],
+// },
+
+// const rootSchema = `
+//   schema {
+//     query: Query
+//     mutation: Mutation
+//   }
+// `
+// const defaultQuery = `
+// # you you joy
+// # you you joyyyyyy
+
+// query {
+//   getMovies {
+//     title
+//     id
+//   }
+// }`

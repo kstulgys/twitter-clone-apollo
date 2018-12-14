@@ -1,5 +1,5 @@
 import { paginateResults } from '../../utils/paginate'
-import { User } from '../../models/user/user.model'
+import User from '../../models/user/user.model'
 // const pageNum = 1
 // const pageSize = 20
 // const currentYear = new Date().getFullYear()
@@ -38,11 +38,11 @@ export default {
   Query: {
     getGenres,
     getMovies,
-    getMoviesById,
+    getMoviesById
   },
   Movie: {
-    watchedBy,
-  },
+    watchedBy
+  }
 }
 
 //   listMoviesWithParameters: async (

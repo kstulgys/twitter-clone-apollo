@@ -1,5 +1,5 @@
-import User from "./user.model"
-import { AuthenticationError } from "apollo-server"
+import User from './user.model'
+import { AuthenticationError } from 'apollo-server'
 // import { newApiKey } from '../../utils/auth'
 
 const requireAuth = user => {
@@ -71,7 +71,7 @@ const login = async (_, { email }) => {
   if (!user) {
     user = await User.create({ email })
   }
-  return new Buffer(email).toString("base64")
+  return new Buffer(email).toString('base64')
 }
 
 export default {

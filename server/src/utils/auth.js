@@ -1,4 +1,4 @@
-import { User } from '../models/user/user.model'
+import User from '../models/user/user.model'
 const isEmail = require('isemail')
 
 export const authenticate = async req => {

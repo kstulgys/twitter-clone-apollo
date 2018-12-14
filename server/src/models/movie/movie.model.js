@@ -1,16 +1,22 @@
-import mongoose, { Schema } from "mongoose"
+import mongoose, { Schema } from 'mongoose'
 
 const movieSchema = new Schema(
   {
-    watched: [{ type: Number }],
-    watchLater: [{ type: Number }],
+    watched: { type: Number },
+    watchLater: { type: Number },
     user: {
       type: Schema.Types.ObjectId,
-      ref: "User"
+      ref: 'user'
     }
   },
   { timestamps: true }
 )
+
+// movieSchema.virtual('id').get(function() {
+//   return this._id.toString()
+// })
+
+export default mongoose.model('movie', movieSchema)
 
 // movieSchema.statics = {
 // 	incFavoriteCount(tweetId) {
@@ -28,5 +34,3 @@ const movieSchema = new Schema(
 // 		)
 // 	}
 // }
-
-export default mongoose.model("movie", movieSchema)

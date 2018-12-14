@@ -1,90 +1,72 @@
-// import User from "./user.model"
-// import Movie from "./user.model"
+import Movie from './movie.model'
 
-// import { AuthenticationError } from "apollo-server"
-// // import { newApiKey } from '../../utils/auth'
+import { AuthenticationError } from 'apollo-server'
+// import { newApiKey } from '../../utils/auth'
 
-// const requireAuth = user => {
-//     if (!user) {
-//       throw new AuthenticationError()
-//     }
-//   }
+const requireAuth = user => {
+  if (!user) {
+    throw new AuthenticationError()
+  }
+}
+// await Movie.create(
+//   { user: user._id },
+//   { $pull: { watchLater: id }, $addToSet: { watched: id } },
+//   { new: true }
+// )
+const addWatched = async (_, { id }, { user }) => {
+  await requireAuth(user)
+  await Movie.create({ user: user.id, watched: id })
+  return id
+}
 
-// const getUserMovies= async (_, args, { user }) => {
-//       await requireAuth(user);
-//     //   const allMovies = MovieAPI.getMovies()
-//       const watchedMovies = Movie.findOne({ userId: user._id });
-//       const [tweets, favorites] = await Promise.all([p1, p2]);
-//     }
-// }
+const addWatchLater = async (_, { id }, { user }) => {
+  await requireAuth(user)
+  await Movie.create({ user: user._id }, { watchLater: id }, { new: true })
+  return id
+}
 
-// const addWatched = async (_, { id }, { user }) => {
-//   await requireAuth(user)
+const removeWatched = async (_, { id }, { user }) => {
+  await requireAuth(user)
+  await Movie.update(
+    { user: user._id },
+    { $pull: { watched: id } },
+    { new: true }
+  )
+  return id
+}
 
-//   await User.findByIdAndUpdate(
-//     user._id,
-//     { $pull: { watchLater: id }, $addToSet: { watched: id } },
-//     { new: true }
-//   )
-//     .lean()
-//     .exec()
-//   return id
-// }
+const removeWatchLater = async (_, { id }, { user }) => {
+  await requireAuth(user)
+  await Movie.update(
+    { user: user._id },
+    { $pull: { watcheLater: id } },
+    { new: true }
+  )
+  return id
+}
 
-// const addWatchLater = async (_, { id }, { user }) => {
-//   await requireAuth(user)
+const getWatched = async (_, args, { user }) => {
+  await requireAuth(user)
+  const res = await Movie.find({ user: user.id }).select('watched -_id')
+  const watched = res.map(w => w.watched)
+  console.log(watched)
+  return watched
+}
 
-//   await User.findByIdAndUpdate(
-//     user._id,
-//     { $pull: { watched: id }, $addToSet: { watchLater: id } },
-//     { new: true }
-//   )
-//   return id
-// }
+const getWatchLater = async (_, args, { user }) => {
+  await requireAuth(user)
+  return await Movie.find({ user: user._id })
+}
 
-// const removeWatched = async (_, { id }, { user }) => {
-//   await requireAuth(user)
-
-//   await User.findByIdAndUpdate(
-//     user._id,
-//     { $pull: { watched: id } },
-//     { new: true }
-//   )
-//   return id
-// }
-
-// const removeWatchLater = async (_, { id }, { user }) => {
-//   await requireAuth(user)
-
-//   await User.findByIdAndUpdate(
-//     user._id,
-//     { $pull: { watchLater: id } },
-//     { new: true }
-//   )
-//   return id
-// }
-
-// export default {
-//   Query: {
-//     getWatched,
-//     getWatchLater
-//   },
-//   Mutation: {
-//     addWatched,
-//     addWatchLater,
-//     removeWatched,
-//     removeWatchLater
-//   }
-// }
-
-// // extend type Query {
-// //     watched: [ID]!
-// //     watched: [ID]!
-// //   }
-
-// //   extend type Mutation {
-// //     addWatched(id: Int): Int!
-// //     addWatchLater(id: Int): Int!
-// //     removeWatched(id: Int): Int!
-// //     removeWatchLater(id: Int): Int!
-// //   }
+export default {
+  Query: {
+    getWatched,
+    getWatchLater
+  },
+  Mutation: {
+    addWatched,
+    addWatchLater,
+    removeWatched,
+    removeWatchLater
+  }
+}

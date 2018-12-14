@@ -1,4 +1,6 @@
-import { User } from '../models/user/user.model'
+import User from '../models/user/user.model'
+import Movie from '../models/movie/movie.model'
+
 import faker from 'faker'
 
 const USERS_TOTAL = 10
@@ -36,13 +38,20 @@ const generateWatched = () => {
 export default async () => {
   try {
     await User.deleteMany()
+
     await Array.from({ length: USERS_TOTAL }).forEach(async (_, i) => {
-      const watchedMovies = await generateWatched()
+      const watchedMovieIds = await generateWatched()
       const fakeEmail = await faker.internet.email()
-      await User.create({
-        email: fakeEmail,
-        watched: watchedMovies,
-        watchLater: []
+
+      const user = await User.create({
+        email: fakeEmail
+      })
+      await watchedMovieIds.forEach(async id => {
+        await Movie.create(
+          { user: user._id },
+          { $pull: { watchLater: id }, $addToSet: { watched: id } },
+          { new: true }
+        )
       })
     })
   } catch (error) {

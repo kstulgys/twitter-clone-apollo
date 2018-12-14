@@ -12,12 +12,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 // import { newApiKey } from '../../utils/auth'
 
+const requireAuth = user => {
+  if (!user) {
+    throw new _apolloServer.AuthenticationError();
+  }
+};
+
 const me = (() => {
-  var _ref = _asyncToGenerator(function* (_, args, ctx) {
-    if (!ctx.user) {
-      throw new _apolloServer.AuthenticationError();
-    }
-    return yield ctx.user;
+  var _ref = _asyncToGenerator(function* (_, args, { user }) {
+    yield requireAuth(user);
+    return yield user;
   });
 
   return function me(_x, _x2, _x3) {
@@ -36,11 +40,10 @@ const listUsers = (() => {
 })();
 
 const addWatched = (() => {
-  var _ref3 = _asyncToGenerator(function* (_, { id }, ctx) {
-    if (!ctx.user) {
-      throw new _apolloServer.AuthenticationError();
-    }
-    yield _user.User.findByIdAndUpdate(ctx.user._id, { $pull: { watchLater: id }, $addToSet: { watched: id } }, { new: true }).lean().exec();
+  var _ref3 = _asyncToGenerator(function* (_, { id }, { user }) {
+    yield requireAuth(user);
+
+    yield _user.User.findByIdAndUpdate(user._id, { $pull: { watchLater: id }, $addToSet: { watched: id } }, { new: true }).lean().exec();
     return id;
   });
 
@@ -50,11 +53,10 @@ const addWatched = (() => {
 })();
 
 const addWatchLater = (() => {
-  var _ref4 = _asyncToGenerator(function* (_, { id }, ctx) {
-    if (!ctx.user) {
-      throw new _apolloServer.AuthenticationError();
-    }
-    yield _user.User.findByIdAndUpdate(ctx.user._id, { $pull: { watched: id }, $addToSet: { watchLater: id } }, { new: true });
+  var _ref4 = _asyncToGenerator(function* (_, { id }, { user }) {
+    yield requireAuth(user);
+
+    yield _user.User.findByIdAndUpdate(user._id, { $pull: { watched: id }, $addToSet: { watchLater: id } }, { new: true });
     return id;
   });
 
@@ -64,11 +66,10 @@ const addWatchLater = (() => {
 })();
 
 const removeWatched = (() => {
-  var _ref5 = _asyncToGenerator(function* (_, { id }, ctx) {
-    if (!ctx.user) {
-      throw new _apolloServer.AuthenticationError();
-    }
-    yield _user.User.findByIdAndUpdate(ctx.user._id, { $pull: { watched: id } }, { new: true });
+  var _ref5 = _asyncToGenerator(function* (_, { id }, { user }) {
+    yield requireAuth(user);
+
+    yield _user.User.findByIdAndUpdate(user._id, { $pull: { watched: id } }, { new: true });
     return id;
   });
 
@@ -78,11 +79,10 @@ const removeWatched = (() => {
 })();
 
 const removeWatchLater = (() => {
-  var _ref6 = _asyncToGenerator(function* (_, { id }, ctx) {
-    if (!ctx.user) {
-      throw new _apolloServer.AuthenticationError();
-    }
-    yield _user.User.findByIdAndUpdate(ctx.user._id, { $pull: { watchLater: id } }, { new: true });
+  var _ref6 = _asyncToGenerator(function* (_, { id }, { user }) {
+    yield requireAuth(user);
+
+    yield _user.User.findByIdAndUpdate(user._id, { $pull: { watchLater: id } }, { new: true });
     return id;
   });
 
