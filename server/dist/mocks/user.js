@@ -6,6 +6,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var _user = require('../models/user/user.model');
 
+var _user2 = _interopRequireDefault(_user);
+
+var _movie = require('../models/movie/movie.model');
+
+var _movie2 = _interopRequireDefault(_movie);
+
 var _faker = require('faker');
 
 var _faker2 = _interopRequireDefault(_faker);
@@ -27,16 +33,25 @@ const generateWatched = () => {
 
 exports.default = _asyncToGenerator(function* () {
   try {
-    yield _user.User.deleteMany();
+    yield _user2.default.deleteMany();
+
     yield Array.from({ length: USERS_TOTAL }).forEach((() => {
       var _ref2 = _asyncToGenerator(function* (_, i) {
-        const watchedMovies = yield generateWatched();
+        const watchedMovieIds = yield generateWatched();
         const fakeEmail = yield _faker2.default.internet.email();
-        yield _user.User.create({
-          email: fakeEmail,
-          watched: watchedMovies,
-          watchLater: []
+
+        const user = yield _user2.default.create({
+          email: fakeEmail
         });
+        yield watchedMovieIds.forEach((() => {
+          var _ref3 = _asyncToGenerator(function* (id) {
+            yield _movie2.default.create({ user: user._id }, { $pull: { watchLater: id }, $addToSet: { watched: id } }, { new: true });
+          });
+
+          return function (_x3) {
+            return _ref3.apply(this, arguments);
+          };
+        })());
       });
 
       return function (_x, _x2) {

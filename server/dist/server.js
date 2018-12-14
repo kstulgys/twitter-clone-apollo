@@ -21,21 +21,29 @@ var _user = require('./models/user/user.schema');
 
 var _user2 = _interopRequireDefault(_user);
 
+var _movie = require('./models/movie/movie.schema');
+
+var _movie2 = _interopRequireDefault(_movie);
+
+var _movie3 = require('./datasources/movie/movie.schema');
+
+var _movie4 = _interopRequireDefault(_movie3);
+
 var _user3 = require('./models/user/user.resolvers');
 
 var _user4 = _interopRequireDefault(_user3);
 
-var _movie = require('./datasources/movie/movie.schema');
-
-var _movie2 = _interopRequireDefault(_movie);
-
-var _movie3 = require('./datasources/movie/movie.resolvers');
-
-var _movie4 = _interopRequireDefault(_movie3);
-
-var _movie5 = require('./datasources/movie');
+var _movie5 = require('./models/movie/movie.resolvers');
 
 var _movie6 = _interopRequireDefault(_movie5);
+
+var _movie7 = require('./datasources/movie/movie.resolvers');
+
+var _movie8 = _interopRequireDefault(_movie7);
+
+var _movie9 = require('./datasources/movie');
+
+var _movie10 = _interopRequireDefault(_movie9);
 
 var _user5 = require('./mocks/user');
 
@@ -60,11 +68,11 @@ const start = exports.start = (() => {
     }
   `;
     const server = new _apolloServer.ApolloServer({
-      typeDefs: [rootSchema, _user2.default, _movie2.default],
-      resolvers: (0, _lodash.merge)({}, _user4.default, _movie4.default),
+      typeDefs: [rootSchema, _user2.default, _movie2.default, _movie4.default],
+      resolvers: (0, _lodash.merge)({}, _user4.default, _movie6.default, _movie8.default),
       dataSources: function () {
         return {
-          movieAPI: new _movie6.default()
+          movieAPI: new _movie10.default()
         };
       },
       context({ req }) {

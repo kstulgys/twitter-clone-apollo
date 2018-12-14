@@ -8,6 +8,10 @@ var _paginate = require('../../utils/paginate');
 
 var _user = require('../../models/user/user.model');
 
+var _user2 = _interopRequireDefault(_user);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 // const pageNum = 1
@@ -32,7 +36,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 const watchedBy = (() => {
   var _ref = _asyncToGenerator(function* (movie, args) {
-    return yield _user.User.find({ watched: { $in: [movie.id] } });
+    return yield _user2.default.find({ watched: { $in: [movie.id] } });
   });
 
   return function watchedBy(_x, _x2) {

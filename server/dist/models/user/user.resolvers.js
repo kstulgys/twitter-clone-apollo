@@ -6,7 +6,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _user = require('./user.model');
 
+var _user2 = _interopRequireDefault(_user);
+
 var _apolloServer = require('apollo-server');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
@@ -31,7 +35,7 @@ const me = (() => {
 
 const listUsers = (() => {
   var _ref2 = _asyncToGenerator(function* (_, args) {
-    return yield _user.User.find({}).lean().exec();
+    return yield _user2.default.find({}).lean().exec();
   });
 
   return function listUsers(_x4, _x5) {
@@ -43,7 +47,7 @@ const addWatched = (() => {
   var _ref3 = _asyncToGenerator(function* (_, { id }, { user }) {
     yield requireAuth(user);
 
-    yield _user.User.findByIdAndUpdate(user._id, { $pull: { watchLater: id }, $addToSet: { watched: id } }, { new: true }).lean().exec();
+    yield _user2.default.findByIdAndUpdate(user._id, { $pull: { watchLater: id }, $addToSet: { watched: id } }, { new: true }).lean().exec();
     return id;
   });
 
@@ -56,7 +60,7 @@ const addWatchLater = (() => {
   var _ref4 = _asyncToGenerator(function* (_, { id }, { user }) {
     yield requireAuth(user);
 
-    yield _user.User.findByIdAndUpdate(user._id, { $pull: { watched: id }, $addToSet: { watchLater: id } }, { new: true });
+    yield _user2.default.findByIdAndUpdate(user._id, { $pull: { watched: id }, $addToSet: { watchLater: id } }, { new: true });
     return id;
   });
 
@@ -69,7 +73,7 @@ const removeWatched = (() => {
   var _ref5 = _asyncToGenerator(function* (_, { id }, { user }) {
     yield requireAuth(user);
 
-    yield _user.User.findByIdAndUpdate(user._id, { $pull: { watched: id } }, { new: true });
+    yield _user2.default.findByIdAndUpdate(user._id, { $pull: { watched: id } }, { new: true });
     return id;
   });
 
@@ -82,7 +86,7 @@ const removeWatchLater = (() => {
   var _ref6 = _asyncToGenerator(function* (_, { id }, { user }) {
     yield requireAuth(user);
 
-    yield _user.User.findByIdAndUpdate(user._id, { $pull: { watchLater: id } }, { new: true });
+    yield _user2.default.findByIdAndUpdate(user._id, { $pull: { watchLater: id } }, { new: true });
     return id;
   });
 
@@ -94,9 +98,9 @@ const removeWatchLater = (() => {
 const login = (() => {
   var _ref7 = _asyncToGenerator(function* (_, { email }) {
     let user;
-    user = yield _user.User.findOne({ email });
+    user = yield _user2.default.findOne({ email });
     if (!user) {
-      user = yield _user.User.create({ email });
+      user = yield _user2.default.create({ email });
     }
     return new Buffer(email).toString('base64');
   });
