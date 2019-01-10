@@ -1,14 +1,29 @@
 import User from '../models/user/user.model'
-const isEmail = require('isemail')
+import { AuthenticationError } from 'apollo-server'
+import config from '../config'
+import jwt from 'jsonwebtoken'
+
+const decodeToken = token => {
+  const [first, second] = token.split(' ')
+  if (first === 'Bearer' && second) {
+    return jwt.verify(second, config.jwt)
+  }
+  throw new Error('Token is not valid')
+}
+
+export const requireAuth = async user => {
+  if (!user) {
+    throw new AuthenticationError()
+  }
+}
 
 export const authenticate = async req => {
-  const auth = (req.headers && req.headers.authorization) || ''
-  const email = new Buffer(auth, 'base64').toString('ascii')
-  if (!isEmail.validate(email)) {
-    return
+  const token = (req.headers && req.headers.autorization) || ''
+  let userId
+  if (token) {
+    userId = await decodeToken(token)
   }
-  let user = await User.findOne({ email })
-  return user
+  return await User.findById(userId)
 }
 
 //? import cuid from 'cuid'
