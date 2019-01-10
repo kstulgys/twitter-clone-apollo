@@ -8,17 +8,30 @@ var _apolloServer = require('apollo-server');
 
 exports.default = _apolloServer.gql`
   type User {
-    id: ID!
+    _id: ID!
     email: String!
     avatar: String!
+    username: String!
+    password: String!
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  type Auth {
+    token: String
   }
 
   extend type Query {
+    getUsers: [User]!
     me: User
-    listUsers: [User]!
   }
 
   extend type Mutation {
-    login(email: String): String
+    signup(email: String, password: String!, username: String!): Auth
+    login(email: String, password: String!): Auth
   }
 `;
+// schema {
+//   query: Query
+//   mutation: Mutation
+// }

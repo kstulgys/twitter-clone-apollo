@@ -1,33 +1,34 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _lodash = require("lodash");
+var _lodash = require('lodash');
 
-require("dotenv").config();
+require('dotenv').config();
 
-const env = process.env.NODE_ENV || "development";
-/// base
-const baseConfig = {
-  env,
-  isDev: env === "development",
-  isProd: env === "production",
-  isTest: env === "testing"
-};
+const env = process.env.NODE_ENV || 'development';
 
 let envConfig = {};
 
 switch (env) {
-  case "dev":
-  case "development":
-    envConfig = require("./dev").config;
+  case 'dev':
+  case 'development':
+    envConfig = require('./dev').config;
     break;
-  case "prod":
-  case "production":
-    envConfig = require("./prod").config;
+  case 'prod':
+  case 'production':
+    envConfig = require('./prod').config;
     break;
 }
 
-exports.default = (0, _lodash.merge)(baseConfig, envConfig);
+exports.default = envConfig;
+
+/// base
+// const baseConfig = {
+//   env,
+//   isDev: env === "development",
+//   isProd: env === "production",
+//   isTest: env === "testing"
+// };
