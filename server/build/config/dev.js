@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 require('dotenv').config();
 
 const config = exports.config = {
-  port: 4000,
+  port: process.env.PORT || 4000,
   jwt: 'helloworld',
   jwtExp: '100d',
   dbUrl: 'mongodb://twitter:twitter123@ds139934.mlab.com:39934/twitter-clone-apollo'

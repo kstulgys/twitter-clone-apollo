@@ -39,7 +39,7 @@ export const start = async () => {
   await connect(config.dbUrl)
   // await createFakeTweets()
   const { url } = await server.listen({
-    port: config.port
+    port: process.env.PORT || config.port
   })
 
   console.log(`GQL server ready at ${url}`)
