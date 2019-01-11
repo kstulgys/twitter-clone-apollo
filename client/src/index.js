@@ -1,3 +1,4 @@
+import 'antd/dist/antd.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -17,11 +18,11 @@ const cache = new InMemoryCache()
 const client = new ApolloClient({
   cache,
   link: new HttpLink({
-    uri: 'https://twitter-clone-apollo-server.herokuapp.com/graphql',
+    uri: 'https://twitter-clone-apollo-server.herokuapp.com',
     headers: {
-      authorization: localStorage.getItem('token'),
-      'client-name': 'Space Explorer [web]',
-      'client-version': '1.0.0'
+      authorization: localStorage.getItem('token') || ''
+      //   'client-name': 'Space Explorer [web]',
+      //   'client-version': '1.0.0'
     }
   })
   //   initializers: {

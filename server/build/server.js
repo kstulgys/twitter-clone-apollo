@@ -63,9 +63,9 @@ const start = exports.start = (() => {
           const user = yield (0, _auth.authenticate)(req);
           return { user };
         })();
-      },
+      }
 
-      introspection: true
+      // introspection: true
     });
 
     yield (0, _db.connect)(_config2.default.dbUrl);
