@@ -23,38 +23,45 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-const decodeToken = token => {
-  const [first, second] = token.split(' ');
-  if (first === 'Bearer' && second) {
-    return _jsonwebtoken2.default.verify(second, _config2.default.jwt);
-  }
-  throw new Error('Token is not valid');
-};
+const decodeToken = (() => {
+  var _ref = _asyncToGenerator(function* (token) {
+    const decoded = yield _jsonwebtoken2.default.verify(token, _config2.default.jwt);
+    if (!decoded._id) {
+      throw new Error('Token is not valid');
+    }
+    return decoded;
+  });
+
+  return function decodeToken(_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
 
 const requireAuth = exports.requireAuth = (() => {
-  var _ref = _asyncToGenerator(function* (user) {
+  var _ref2 = _asyncToGenerator(function* (user) {
     if (!user) {
       throw new _apolloServer.AuthenticationError();
     }
   });
 
-  return function requireAuth(_x) {
-    return _ref.apply(this, arguments);
+  return function requireAuth(_x2) {
+    return _ref2.apply(this, arguments);
   };
 })();
 
 const authenticate = exports.authenticate = (() => {
-  var _ref2 = _asyncToGenerator(function* (req) {
-    const token = req.headers && req.headers.autorization || '';
-    let userId;
+  var _ref3 = _asyncToGenerator(function* (req) {
+    const token = req.headers && req.headers.authorization || '';
+    let decoded;
     if (token) {
-      userId = yield decodeToken(token);
+      decoded = yield decodeToken(token);
     }
-    return yield _user2.default.findById(userId);
+    // console.log(decoded)
+    return yield _user2.default.findById(decoded);
   });
 
-  return function authenticate(_x2) {
-    return _ref2.apply(this, arguments);
+  return function authenticate(_x3) {
+    return _ref3.apply(this, arguments);
   };
 })();
 
