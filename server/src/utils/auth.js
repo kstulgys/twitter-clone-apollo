@@ -3,12 +3,12 @@ import { AuthenticationError } from 'apollo-server'
 import config from '../config'
 import jwt from 'jsonwebtoken'
 
-const decodeToken = token => {
-  const [first, second] = token.split(' ')
-  if (first === 'Bearer' && second) {
-    return jwt.verify(second, config.jwt)
+const decodeToken = async token => {
+  const decoded = await jwt.verify(token, config.jwt)
+  if (!decoded._id) {
+    throw new Error('Token is not valid')
   }
-  throw new Error('Token is not valid')
+  return decoded
 }
 
 export const requireAuth = async user => {
@@ -18,12 +18,13 @@ export const requireAuth = async user => {
 }
 
 export const authenticate = async req => {
-  const token = (req.headers && req.headers.autorization) || ''
-  let userId
+  const token = (req.headers && req.headers.authorization) || ''
+  let decoded
   if (token) {
-    userId = await decodeToken(token)
+    decoded = await decodeToken(token)
   }
-  return await User.findById(userId)
+  // console.log(decoded)
+  return await User.findById(decoded)
 }
 
 //? import cuid from 'cuid'

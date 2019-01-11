@@ -71,7 +71,7 @@ const start = exports.start = (() => {
     yield (0, _db.connect)(_config2.default.dbUrl);
     // await createFakeTweets()
     const { url } = yield server.listen({
-      port: _config2.default.port
+      port: process.env.PORT || _config2.default.port
     });
 
     console.log(`GQL server ready at ${url}`);
