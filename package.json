@@ -1,24 +1,19 @@
 {
-  "name": "tmdb-apollo",
+  "name": "twitter-clone-apollo",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "scripts": {
-    "gitwip": "git add . && git commit -m 'wip' && git push",
-    "gitd": "git subtree push --prefix server heroku-server master",
-    "deploy": "yarn gitwip && yarn build && yarn gitd"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kstulgys/tmdb-apollo.git"
+    "url": "git+https://github.com/kstulgys/twitter-clone-apollo.git"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kstulgys/tmdb-apollo/issues"
+    "url": "https://github.com/kstulgys/twitter-clone-apollo/issues"
   },
-  "homepage": "https://github.com/kstulgys/tmdb-apollo#readme",
-  "dependencies": {
-    "bcrypt-nodejs": "^0.0.3"
-  }
+  "homepage": "https://github.com/kstulgys/twitter-clone-apollo#readme"
 }

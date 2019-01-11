@@ -6,7 +6,9 @@
   "scripts": {
     "build": "babel src --out-dir build",
     "dev": "nodemon --exec babel-node src/index.js",
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "gitd": "git subtree push --prefix server heroku-server master",
+    "deploy": "yarn build && yarn gitd"
   },
   "dependencies": {
     "apollo-datasource": "^0.2.1",
