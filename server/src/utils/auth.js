@@ -23,7 +23,7 @@ export const authenticate = async req => {
   if (token) {
     decoded = await decodeToken(token)
   }
-  // console.log(decoded)
+  //// console.log(decoded)
   return await User.findById(decoded)
 }
 
