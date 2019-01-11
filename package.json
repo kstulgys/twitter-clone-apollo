@@ -7,8 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "gitwip": "git add . && git commit -m 'wip'",
     "build": "babel server/src --out-dir server/build",
-    "gitd": "git subtree push --prefix server heroku-server master",
-    "deploy-server": "yarn gitwip && yarn build && yarn gitd"
+    "git-push-server": "git subtree push --prefix server heroku-server master",
+    "git-push-client": "git subtree push --prefix client heroku-client master",
+    "deploy-server": "yarn build && yarn git-push-server",
+    "deploy-client": "yarn git-push-client",
+    "deploy-all": "deploy-server && deploy-client"
   },
   "repository": {
     "type": "git",

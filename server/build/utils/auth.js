@@ -56,7 +56,7 @@ const authenticate = exports.authenticate = (() => {
     if (token) {
       decoded = yield decodeToken(token);
     }
-    // console.log(decoded)
+    //// console.log(decoded)
     return yield _user2.default.findById(decoded);
   });
 

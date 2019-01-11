@@ -31,9 +31,9 @@ export const start = async () => {
     async context({ req }) {
       const user = await authenticate(req)
       return { user }
-    },
+    }
 
-    introspection: true
+    // introspection: true
   })
 
   await connect(config.dbUrl)
