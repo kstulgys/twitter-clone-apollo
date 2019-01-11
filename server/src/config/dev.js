@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 export const config = {
-  port: 4000,
+  port: process.env.PORT || 4000,
   jwt: 'helloworld',
   jwtExp: '100d',
   dbUrl:
