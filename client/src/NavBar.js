@@ -2,12 +2,9 @@ import React from 'react'
 import { Row, Col, Card, Button, Icon, Input } from 'antd'
 import { Query, ApolloProvider } from 'react-apollo'
 import gql from 'graphql-tag'
-import useUserData from './hooks'
+import withUserData from './hooks'
 
 function NavBar() {
-  const data = useUserData()
-  console.log.log(data)
-
   return (
     <Card>
       <Row type="flex" justify="space-between">
@@ -35,4 +32,4 @@ function NavBar() {
   )
 }
 
-export default NavBar
+export default withUserData(NavBar)
