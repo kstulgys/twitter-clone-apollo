@@ -5,12 +5,10 @@ import AppLayout from './AppLayout'
 import './App.css'
 import Feed from './Feed'
 
+const logedIn = false
+
 function App() {
-  return (
-    <div>
-      <AppLayout feed={<Feed />} />
-    </div>
-  )
+  return <AppLayout feed={<Feed />} />
 }
 
 // <ul>

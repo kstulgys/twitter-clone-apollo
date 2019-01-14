@@ -1,31 +1,37 @@
 import React from 'react'
 import { Card, Icon, Avatar } from 'antd'
+import { distanceInWordsToNow } from 'date-fns'
+
+// import { timeDifferenceForDate } from './utils'
+
 const { Meta } = Card
 
-function Tweet({ text }) {
+function Tweet({ tweet }) {
   return (
-    <Card
-      style={{ width: 500 }}
-      //   cover={
-      //     <img
-      //       alt="example"
-      //       src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-      //     />
-      //   }
-      actions={[
-        <Icon type="setting" />,
-        <Icon type="edit" />,
-        <Icon type="ellipsis" />
-      ]}>
-      <Meta
-        avatar={
-          <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-        }
-        title="Card title"
-        description="This is the description"
-      />
-      <p>{text}</p>
-    </Card>
+    <div style={{ paddingTop: 25 }}>
+      <Card
+        style={{ width: '100%' }}
+        //   cover={
+        //     <img
+        //       alt="example"
+        //       src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+        //     />
+        //   }
+        actions={[
+          <Icon type="message" />,
+          <Icon type="retweet" />,
+          <Icon type="heart" />
+        ]}>
+        <Meta
+          avatar={
+            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+          }
+          title={tweet.user.username}
+          description={`${distanceInWordsToNow(Number(tweet.createdAt))} ago`}
+        />
+        <p>{tweet.text}</p>
+      </Card>
+    </div>
   )
 }
 
