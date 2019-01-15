@@ -1,4 +1,5 @@
 import 'antd/dist/antd.css'
+import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -8,28 +9,50 @@ import { HttpLink } from 'apollo-link-http'
 import { Query, ApolloProvider } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import './index.css'
-import App from './App'
-import { resolvers, typeDefs } from './resolvers'
-import SignUp from './SignUp'
+import { split } from 'apollo-link'
+import { WebSocketLink } from 'apollo-link-ws'
+import { getMainDefinition } from 'apollo-utilities'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 
-// import * as serviceWorker from './serviceWorker'
-// Set up our apollo-client to point at the server we created
-// this can be local or a remote endpoint
+import App from './components/App'
+import { resolvers, typeDefs } from './resolvers'
+import SignUp from './components/SignUp'
+import AuthUserProvider from './context/authUserContext'
+
+const authLink = new HttpLink({
+  uri: 'https://twitter-clone-apollo-server.herokuapp.com',
+  headers: {
+    authorization: localStorage.getItem('token') || ''
+  }
+})
+
+const WebSoc = new SubscriptionClient(
+  'ws://twitter-clone-apollo-server.herokuapp.com',
+  {
+    reconnect: true,
+    connectionParams: {
+      authToken: localStorage.getItem('token') || ''
+    }
+  }
+)
+
+const wsLink = new WebSocketLink(WebSoc)
+
+const link = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query)
+    return kind === 'OperationDefinition' && operation === 'subscription'
+  },
+  wsLink,
+  authLink
+)
+
 const cache = new InMemoryCache()
 const client = new ApolloClient({
   cache,
-  link: new HttpLink({
-    uri: 'https://twitter-clone-apollo-server.herokuapp.com',
-    headers: {
-      authorization: localStorage.getItem('token') || ''
-      //   'client-name': 'Space Explorer [web]',
-      //   'client-version': '1.0.0'
-    }
-  }),
+  link,
   initializers: {
     isLoggedIn: () => !!localStorage.getItem('token')
-    // cartItems: () => []
   },
   resolvers,
   typeDefs
@@ -43,9 +66,11 @@ const IS_LOGGED_IN = gql`
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Query query={IS_LOGGED_IN}>
-      {({ data }) => (data.isLoggedIn ? <App /> : <SignUp />)}
-    </Query>
+    <AuthUserProvider client={client}>
+      <Query query={IS_LOGGED_IN}>
+        {({ data }) => (data.isLoggedIn ? <App /> : <SignUp />)}
+      </Query>
+    </AuthUserProvider>
   </ApolloProvider>,
 
   document.getElementById('root')

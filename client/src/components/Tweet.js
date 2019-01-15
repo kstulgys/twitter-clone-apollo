@@ -8,9 +8,12 @@ const { Meta } = Card
 
 function Tweet({ tweet }) {
   return (
-    <div style={{ paddingTop: 25 }}>
+    <div style={{ paddingTop: 10 }}>
       <Card
-        style={{ width: '100%' }}
+        style={{
+          width: '100%',
+          boxShadow: '0 1px 2px rgba(0,0,0,0.12)'
+        }}
         //   cover={
         //     <img
         //       alt="example"

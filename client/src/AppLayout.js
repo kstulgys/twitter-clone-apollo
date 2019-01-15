@@ -1,15 +1,21 @@
 import React from 'react'
-import { Row, Col } from 'antd'
-import NavBar from './NavBar'
+import { Row, Col, Card } from 'antd'
+import NavBar from './components/NavBar'
 
 function AppLayout({ feed }) {
   return (
     <>
       <NavBar />
-      <Row type="flex" justify="center" gutter={32}>
-        <Col span={5} style={{ backgroundColor: 'coral' }} />
-        <Col span={10}>{feed}</Col>
-        <Col span={5} style={{ backgroundColor: 'teal' }} />
+      <Row type="flex" justify="center" gutter={8}>
+        <Col lg={5} md={6} style={{ paddingTop: 10 }}>
+          <Card />
+        </Col>
+        <Col lg={10} md={13}>
+          {feed}
+        </Col>
+        <Col lg={5} md={0} style={{ paddingTop: 10 }}>
+          <Card />
+        </Col>
       </Row>
     </>
   )

@@ -19,7 +19,7 @@ export default function SignUp() {
         <Mutation
           mutation={SIGN_UP}
           onCompleted={({ signup }) => {
-            console.log(signup)
+            // console.log(signup)
             localStorage.setItem('token', signup.token)
             client.writeData({ data: { isLoggedIn: true } })
           }}>
@@ -52,7 +52,7 @@ function SignUpForm({ signup }) {
     const { username, email, password } = state
     // console.log(signup, username, email, password)
     const data = await signup({ variables: { username, email, password } })
-    console.log(data)
+    // console.log(data)
     setState({
       username: '',
       email: '',
@@ -94,7 +94,7 @@ function SignUpForm({ signup }) {
                 Sign up
               </Button>
               <Checkbox>Remember me</Checkbox>
-              <a href="">Forgot password</a>
+              <a href="#">Forgot password</a>
             </Row>
           </Form.Item>
         </Form>
@@ -102,30 +102,3 @@ function SignUpForm({ signup }) {
     </Row>
   )
 }
-
-// <pre>{JSON.stringify(state, null, 4)}</pre>
-// <Row type="flex" justify="center" style={{ marginTop: 150 }}>
-// <Col span={8}>
-//   <Form>
-//     <Form.Item>
-//       <Input prefix={<Icon type="user" />} placeholder="Username" />
-//     </Form.Item>
-//     <Form.Item>
-//       <Input
-//         prefix={<Icon type="lock" />}
-//         type="password"
-//         placeholder="Password"
-//       />
-//     </Form.Item>
-//     <Form.Item>
-//       <Row type="flex" justify="space-between">
-//         <Button type="primary" htmlType="submit">
-//           Log in
-//         </Button>
-//         <Checkbox>Remember me</Checkbox>
-//         <a href="">Forgot password</a>
-//       </Row>
-//     </Form.Item>
-//   </Form>
-// </Col>
-// </Row>

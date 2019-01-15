@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import AppLayout from './AppLayout'
-import './App.css'
+import AppLayout from '../AppLayout'
 import Feed from './Feed'
 
 const logedIn = false
