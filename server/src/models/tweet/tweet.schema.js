@@ -20,6 +20,9 @@ export default gql`
     updateTweet(_id: ID!, text: String!): Tweet
     deleteTweet(_id: ID!): Tweet
   }
+  type Subscription {
+    tweetAdded: Tweet
+  }
 `
 // schema {
 //   query: Query

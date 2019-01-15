@@ -28,9 +28,14 @@ export const start = async () => {
   const server = new ApolloServer({
     typeDefs: [rootSchema, userSchema, tweetSchema],
     resolvers: merge({}, userResolvers, tweetResolvers),
-    async context({ req }) {
-      const user = await authenticate(req)
-      return { user }
+    async context({ req, connection }) {
+      if (connection) {
+        // check connection for metadata
+        return connection.context
+      } else {
+        const user = await authenticate(req)
+        return { user }
+      }
     }
 
     // introspection: true
