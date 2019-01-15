@@ -20,7 +20,7 @@ export default gql`
     updateTweet(_id: ID!, text: String!): Tweet
     deleteTweet(_id: ID!): Tweet
   }
-  type Subscription {
+  extend type Subscription {
     tweetAdded: Tweet
   }
 `

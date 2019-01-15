@@ -4,7 +4,7 @@ import { requireAuth } from '../../utils/auth'
 import { PubSub } from 'apollo-server'
 const pubsub = new PubSub()
 
-const TWEET_ADDED = 'TWEET_ADDED'
+const TWEET_ADDED = 'tweetAdded'
 
 const getTweets = async (_, args, { user }) => {
   return Tweet.find({}).sort({ createdAt: -1 })
@@ -21,9 +21,9 @@ const getTweet = async (_, { _id }, { user }) => {
 
 const createTweet = async (_, { text }, { user }) => {
   await requireAuth(user)
-  await pubsub.publish(TWEET_ADDED, { tweetAdded: args })
-  // return postController.addTweet(args)
-  return Tweet.create({ text, user: user._id })
+  const tweet = await Tweet.create({ text, user: user._id })
+  pubsub.publish(TWEET_ADDED, { [TWEET_ADDED]: tweet })
+  return tweet
 }
 
 const updateTweet = async (_, { _id, ...rest }, { user }) => {
@@ -60,7 +60,7 @@ export default {
   Subscription: {
     tweetAdded: {
       // Additional event labels can be passed to asyncIterator creation
-      subscribe: () => pubsub.asyncIterator([TWEET_ADDED])
+      subscribe: () => pubsub.asyncIterator(TWEET_ADDED)
     }
   }
 }

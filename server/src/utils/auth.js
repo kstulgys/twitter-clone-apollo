@@ -18,7 +18,10 @@ export const requireAuth = async user => {
 }
 
 export const authenticate = async req => {
-  const token = (req.headers && req.headers.authorization) || ''
+  const headersToken = req.headers && req.headers.authorization
+  const contextToken = req.context && req.context.authorization
+  const token = headersToken ? headersToken : contextToken
+
   let decoded
   if (token) {
     decoded = await decodeToken(token)

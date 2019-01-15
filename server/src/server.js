@@ -29,15 +29,16 @@ export const start = async () => {
     typeDefs: [rootSchema, userSchema, tweetSchema],
     resolvers: merge({}, userResolvers, tweetResolvers),
     async context({ req, connection }) {
-      if (connection) {
-        // check connection for metadata
-        return connection.context
-      } else {
-        const user = await authenticate(req)
-        return { user }
-      }
-    }
+      let user = {}
 
+      if (connection) {
+        const re = connection.context.authorization
+        user = await authenticate(connection)
+      } else {
+        user = await authenticate(req)
+      }
+      return { user }
+    }
     // introspection: true
   })
 
