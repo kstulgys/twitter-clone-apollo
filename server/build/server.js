@@ -58,13 +58,19 @@ const start = exports.start = (() => {
     const server = new _apolloServer.ApolloServer({
       typeDefs: [rootSchema, _user2.default, _tweet2.default],
       resolvers: (0, _lodash.merge)({}, _user4.default, _tweet4.default),
-      context({ req }) {
+      context({ req, connection }) {
         return _asyncToGenerator(function* () {
-          const user = yield (0, _auth.authenticate)(req);
+          let user = {};
+
+          if (connection) {
+            const re = connection.context.authorization;
+            user = yield (0, _auth.authenticate)(connection);
+          } else {
+            user = yield (0, _auth.authenticate)(req);
+          }
           return { user };
         })();
       }
-
       // introspection: true
     });
 

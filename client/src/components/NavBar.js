@@ -13,24 +13,22 @@ const menu = (
   <Menu>
     <Menu.Item>
       <a
-        target='_blank'
-        rel='noopener noreferrer'
-        href='http://www.alipay.com/'
-      >
+        target="_blank"
+        rel="noopener noreferrer"
+        href="http://www.alipay.com/">
         1st menu item
       </a>
     </Menu.Item>
     <Menu.Item>
       <a
-        target='_blank'
-        rel='noopener noreferrer'
-        href='http://www.taobao.com/'
-      >
+        target="_blank"
+        rel="noopener noreferrer"
+        href="http://www.taobao.com/">
         2nd menu item
       </a>
     </Menu.Item>
     <Menu.Item>
-      <a target='_blank' rel='noopener noreferrer' href='http://www.tmall.com/'>
+      <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
         3rd menu item
       </a>
     </Menu.Item>
@@ -43,47 +41,45 @@ function NavBar() {
   return (
     <>
       <Row
-        type='flex'
-        align='middle'
-        justify='center'
-        style={{ backgroundColor: 'white' }}
-      >
-        <Col span={2} />
-        <Col lg={20} md={19}>
-          <Row type='flex' align='middle' justify='space-between'>
+        type="flex"
+        align="middle"
+        justify="center"
+        style={{ backgroundColor: 'white' }}>
+        <Col lg={2} md={2} sm={0} />
+        <Col lg={20} md={19} sm={23} xs={24}>
+          <Row type="flex" align="middle" justify="space-between">
             <Col>
               <Menu
                 onClick={setCurrent}
                 selectedKeys={[current]}
-                mode='horizontal'
-              >
-                <Menu.Item key='home'>
-                  <Icon type='home' />
+                mode="horizontal">
+                <Menu.Item key="home">
+                  <Icon type="home" />
                   Home
                 </Menu.Item>
-                <Menu.Item key='mail'>
-                  <Icon type='mail' />
+                <Menu.Item key="mail">
+                  <Icon type="mail" />
                   Message
                 </Menu.Item>
               </Menu>
             </Col>
             <Col style={{ display: 'flex' }}>
               <Search
-                placeholder='input search text'
+                placeholder="input search text"
                 onSearch={value => console.log(value)}
                 style={{ width: 200, marginRight: 15 }}
               />
               <Dropdown overlay={menu}>
                 <Avatar
                   style={{ marginRight: 15 }}
-                  src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
                 />
               </Dropdown>
               <TweetModal />
             </Col>
           </Row>
         </Col>
-        <Col span={2} />
+        <Col lg={2} md={2} sm={0} />
       </Row>
     </>
   )

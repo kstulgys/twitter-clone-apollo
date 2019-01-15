@@ -51,7 +51,10 @@ const requireAuth = exports.requireAuth = (() => {
 
 const authenticate = exports.authenticate = (() => {
   var _ref3 = _asyncToGenerator(function* (req) {
-    const token = req.headers && req.headers.authorization || '';
+    const headersToken = req.headers && req.headers.authorization;
+    const contextToken = req.context && req.context.authorization;
+    const token = headersToken ? headersToken : contextToken;
+
     let decoded;
     if (token) {
       decoded = yield decodeToken(token);

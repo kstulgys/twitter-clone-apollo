@@ -26,6 +26,9 @@ exports.default = _apolloServer.gql`
     updateTweet(_id: ID!, text: String!): Tweet
     deleteTweet(_id: ID!): Tweet
   }
+  extend type Subscription {
+    tweetAdded: Tweet
+  }
 `;
 // schema {
 //   query: Query

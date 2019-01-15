@@ -21,18 +21,21 @@ import AuthUserProvider from './context/authUserContext'
 // uri: 'https://twitter-clone-apollo-server.herokuapp.com',
 
 const authLink = new HttpLink({
-  uri: 'http://localhost:4000/',
+  uri: 'https://twitter-clone-apollo-server.herokuapp.com',
   headers: {
     authorization: localStorage.getItem('token') || ''
   }
 })
 
-const WebSoc = new SubscriptionClient('ws://localhost:4000/', {
-  reconnect: true,
-  connectionParams: {
-    authToken: localStorage.getItem('token') || ''
+const WebSoc = new SubscriptionClient(
+  'ws://twitter-clone-apollo-server.herokuapp.com',
+  {
+    reconnect: true,
+    connectionParams: {
+      authToken: localStorage.getItem('token') || ''
+    }
   }
-})
+)
 
 const wsLink = new WebSocketLink(WebSoc)
 

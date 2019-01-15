@@ -14,11 +14,17 @@ var _user3 = _interopRequireDefault(_user2);
 
 var _auth = require('../../utils/auth');
 
+var _apolloServer = require('apollo-server');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const pubsub = new _apolloServer.PubSub();
+
+const TWEET_ADDED = 'tweetAdded';
 
 const getTweets = (() => {
   var _ref = _asyncToGenerator(function* (_, args, { user }) {
@@ -54,7 +60,9 @@ const getTweet = (() => {
 const createTweet = (() => {
   var _ref4 = _asyncToGenerator(function* (_, { text }, { user }) {
     yield (0, _auth.requireAuth)(user);
-    return _tweet2.default.create({ text, user: user._id });
+    const tweet = yield _tweet2.default.create({ text, user: user._id });
+    pubsub.publish(TWEET_ADDED, { [TWEET_ADDED]: tweet });
+    return tweet;
   });
 
   return function createTweet(_x10, _x11, _x12) {
@@ -115,5 +123,11 @@ exports.default = {
         return _ref8.apply(this, arguments);
       };
     })()
+  },
+  Subscription: {
+    tweetAdded: {
+      // Additional event labels can be passed to asyncIterator creation
+      subscribe: () => pubsub.asyncIterator(TWEET_ADDED)
+    }
   }
 };

@@ -17,12 +17,40 @@ const GET_TWEETS = gql`
     }
   }
 `
+
+const NEW_TWEETS_SUBS = gql`
+  subscription tweetAdded {
+    tweetAdded {
+      text
+      _id
+      createdAt
+      favoriteCount
+      user {
+        username
+      }
+    }
+  }
+`
 function Feed() {
+  const subscribeToNewTweets = async ({ subscribeToMore }) => {
+    subscribeToMore({
+      document: NEW_TWEETS_SUBS,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+        const newTweet = subscriptionData.data.tweetAdded
+        return {
+          ...prev,
+          getTweets: [{ ...newTweet }, ...prev.getTweets]
+        }
+      }
+    })
+  }
   return (
     <Query query={GET_TWEETS}>
-      {({ data, loading, error, fetchMore }) => {
+      {({ data, loading, error, fetchMore, subscribeToMore }) => {
         if (error) return <h1>{error.message}</h1>
         if (loading) return <Spinner />
+        subscribeToNewTweets({ subscribeToMore })
         return (
           <>
             {data &&
