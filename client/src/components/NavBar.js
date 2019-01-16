@@ -79,7 +79,7 @@ function NavBar() {
             </Col>
           </Row>
         </Col>
-        <Col lg={2} md={2} sm={0} />
+        <Col lg={2} md={2} sm={0} xs={0} />
       </Row>
     </>
   )

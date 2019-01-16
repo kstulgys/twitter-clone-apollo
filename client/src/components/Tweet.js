@@ -6,7 +6,7 @@ import { distanceInWordsToNow } from 'date-fns'
 
 const { Meta } = Card
 
-function Tweet({ tweet }) {
+function Tweet({ text, createdAt, user }) {
   return (
     <div style={{ paddingTop: 10 }}>
       <Card
@@ -29,10 +29,10 @@ function Tweet({ tweet }) {
           avatar={
             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
           }
-          title={tweet.user.username}
-          description={`${distanceInWordsToNow(Number(tweet.createdAt))} ago`}
+          title={user.username}
+          description={`${distanceInWordsToNow(Number(createdAt))} ago`}
         />
-        <p>{tweet.text}</p>
+        <p>{text}</p>
       </Card>
     </div>
   )

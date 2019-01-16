@@ -41,7 +41,7 @@ function TweetModal() {
     setVisible(true)
   }
 
-  const handleOk = async (e, mutate) => {
+  const handleOk = mutate => {
     setLoading(true)
     mutate()
   }
@@ -60,15 +60,17 @@ function TweetModal() {
         variables={{ text: TweetInput }}
         update={(store, { data: { createTweet } }) => {
           const data = store.readQuery({ query: GET_TWEETS })
-          store.writeQuery({
-            query: GET_TWEETS,
-            data: { getTweets: [{ ...createTweet }, ...data.getTweets] }
-          })
+          if (!data.getTweets.find(t => t._id === createTweet._id)) {
+            store.writeQuery({
+              query: GET_TWEETS,
+              data: { getTweets: [{ ...createTweet }, ...data.getTweets] }
+            })
+          }
         }}
         onCompleted={() => {
           setLoading(false)
-          setVisible(false)
           setTweetInput('')
+          setVisible(false)
         }}>
         {mutate => (
           <Modal
@@ -80,11 +82,15 @@ function TweetModal() {
                 key="submit"
                 type="primary"
                 loading={loading}
-                onClick={e => handleOk(e, mutate)}>
+                onClick={() => handleOk(mutate)}>
                 Tweet
               </Button>
             ]}>
-            <TextArea rows={4} onChange={e => setTweetInput(e.target.value)} />
+            <TextArea
+              value={TweetInput}
+              rows={4}
+              onChange={e => setTweetInput(e.target.value)}
+            />
           </Modal>
         )}
       </Mutation>

@@ -38,10 +38,13 @@ function Feed() {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev
         const newTweet = subscriptionData.data.tweetAdded
-        return {
-          ...prev,
-          getTweets: [{ ...newTweet }, ...prev.getTweets]
+        if (!prev.getTweets.find(t => t._id === newTweet._id)) {
+          return {
+            ...prev,
+            getTweets: [{ ...newTweet }, ...prev.getTweets]
+          }
         }
+        return prev
       }
     })
   }
@@ -55,9 +58,7 @@ function Feed() {
           <>
             {data &&
               data.getTweets &&
-              data.getTweets.map(tweet => (
-                <Tweet key={tweet._id} tweet={tweet} />
-              ))}
+              data.getTweets.map(tweet => <Tweet key={tweet._id} {...tweet} />)}
           </>
         )
       }}

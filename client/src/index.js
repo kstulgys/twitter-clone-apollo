@@ -3,7 +3,7 @@ import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { ApolloClient } from 'apollo-client'
+import createNetworkInterface, { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import { Query, ApolloProvider } from 'react-apollo'
@@ -12,40 +12,37 @@ import gql from 'graphql-tag'
 import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
-import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 import App from './components/App'
 import { resolvers, typeDefs } from './resolvers'
 import SignUp from './components/SignUp'
 import AuthUserProvider from './context/authUserContext'
-// uri: 'https://twitter-clone-apollo-server.herokuapp.com',
 
-const authLink = new HttpLink({
-  uri: 'https://twitter-clone-apollo-server.herokuapp.com',
-  headers: {
-    authorization: localStorage.getItem('token') || ''
-  }
-})
-
-const WebSoc = new SubscriptionClient(
-  'ws://twitter-clone-apollo-server.herokuapp.com',
-  {
+const wsLink = new WebSocketLink({
+  uri: 'wss://twitter-clone-apollo-server.herokuapp.com/graphql',
+  options: {
     reconnect: true,
     connectionParams: {
       authToken: localStorage.getItem('token') || ''
     }
   }
-)
-
-const wsLink = new WebSocketLink(WebSoc)
+})
+const httpLink = new HttpLink({
+  uri: 'https://twitter-clone-apollo-server.herokuapp.com/graphql',
+  headers: {
+    authorization: localStorage.getItem('token') || ''
+  }
+})
 
 const link = split(
+  // split based on operation type
   ({ query }) => {
     const { kind, operation } = getMainDefinition(query)
+    // console.log({ query: query, kind: kind, operation: operation })
     return kind === 'OperationDefinition' && operation === 'subscription'
   },
   wsLink,
-  authLink
+  httpLink
 )
 
 const cache = new InMemoryCache()
