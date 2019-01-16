@@ -1,5 +1,5 @@
-import Tweet from '../tweet/tweet.model'
-import FavoriteTweet from '../tweet/FavoriteTweet.model'
+import Tweet from './tweet.model'
+import FavoriteTweet from './favoriteTweet.model'
 import User from '../user/user.model'
 
 import { requireAuth } from '../../utils/auth'
@@ -12,11 +12,11 @@ const TWEET_FAVORITED = 'tweetFavorited'
 const getTweets = async (_, args, { user }) => {
   const p1 = Tweet.find({}).sort({ createdAt: -1 })
   const p2 = FavoriteTweet.findOne({ userId: user._id })
-  const [tweets, favorites] = await Promise.all([p1, p2])
 
+  const [tweets, favorites] = await Promise.all([p1, p2])
   const tweetsToSend = tweets.reduce((arr, tweet) => {
     const tw = tweet.toJSON()
-    if (favorites.tweets.some(t => t.equals(tweet._id))) {
+    if (favorites.tweets.some(t => t.equals(tw._id))) {
       arr.push({
         ...tw,
         isFavorited: true
@@ -69,7 +69,7 @@ const deleteTweet = async (_, { _id }, { user }) => {
 const favoriteTweet = async (_, { _id }, { user }) => {
   await requireAuth(user)
   const favorites = await FavoriteTweet.findOne({ userId: user._id })
-  return favorites.userFavoritedTweet(_id)
+  return await favorites.userFavoritedTweet(_id)
 }
 
 export default {

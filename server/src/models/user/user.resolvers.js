@@ -1,4 +1,5 @@
 import User from './user.model'
+import FavoriteTweet from '../tweet/favoriteTweet.model'
 import { requireAuth } from '../../utils/auth'
 
 const getUsers = async (_, args) => {
@@ -7,6 +8,8 @@ const getUsers = async (_, args) => {
 
 const signup = async (_, { email, username, password }) => {
   const user = await User.create({ email, username, password })
+  const favorites = await FavoriteTweet.create({ userId: user._id })
+  // console.log(favorites)
   return {
     token: user.createToken()
   }

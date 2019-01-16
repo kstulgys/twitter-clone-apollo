@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 import Tweet from './tweet.model'
+const ObjectId = require('mongoose').Types.ObjectId
 import { PubSub } from 'apollo-server'
 const pubsub = new PubSub()
 
@@ -18,8 +19,13 @@ const favoriteTweetSchema = new Schema({
   ]
 })
 
+ObjectId.prototype.valueOf = function() {
+  return this.toString()
+}
+
 favoriteTweetSchema.methods = {
   async userFavoritedTweet(tweetId) {
+    console.log('in userFavoritedTweet')
     if (this.tweets.some(t => t.equals(tweetId))) {
       this.tweets.pull(tweetId)
       await this.save()
