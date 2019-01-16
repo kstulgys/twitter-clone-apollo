@@ -3,6 +3,7 @@ import { Query, ApolloProvider } from 'react-apollo'
 import gql from 'graphql-tag'
 import Tweet from './Tweet'
 import Spinner from './Spinner'
+import TweetsSkeleton from './TweetsSkeleton'
 
 const GET_TWEETS = gql`
   query getTweets {
@@ -24,6 +25,7 @@ const NEW_TWEETS_SUBS = gql`
       text
       _id
       createdAt
+      isFavorited
       favoriteCount
       user {
         username
@@ -48,12 +50,17 @@ function Feed() {
       }
     })
   }
+
+  const subscribeToNewFavorites = async ({ subscribeToMore }) => {}
+
   return (
     <Query query={GET_TWEETS}>
       {({ data, loading, error, fetchMore, subscribeToMore }) => {
         if (error) return <h1>{error.message}</h1>
-        if (loading) return <Spinner />
+        if (loading) return <TweetsSkeleton />
         subscribeToNewTweets({ subscribeToMore })
+        subscribeToNewFavorites({ subscribeToMore })
+
         return (
           <>
             {data &&

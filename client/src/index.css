@@ -22,6 +22,20 @@ body {
   background-color: #e6ecf0;
 }
 
+.App-logo {
+  animation: App-logo-spin infinite 10s linear;
+  height: 35px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

@@ -1,13 +1,36 @@
 import Tweet from '../tweet/tweet.model'
+import FavoriteTweet from '../tweet/FavoriteTweet.model'
 import User from '../user/user.model'
+
 import { requireAuth } from '../../utils/auth'
 import { PubSub } from 'apollo-server'
 const pubsub = new PubSub()
 
 const TWEET_ADDED = 'tweetAdded'
+const TWEET_FAVORITED = 'tweetFavorited'
 
 const getTweets = async (_, args, { user }) => {
-  return Tweet.find({}).sort({ createdAt: -1 })
+  const p1 = Tweet.find({}).sort({ createdAt: -1 })
+  const p2 = FavoriteTweet.findOne({ userId: user._id })
+  const [tweets, favorites] = await Promise.all([p1, p2])
+
+  const tweetsToSend = tweets.reduce((arr, tweet) => {
+    const tw = tweet.toJSON()
+    if (favorites.tweets.some(t => t.equals(tweet._id))) {
+      arr.push({
+        ...tw,
+        isFavorited: true
+      })
+    } else {
+      arr.push({
+        ...tw,
+        isFavorited: false
+      })
+    }
+    return arr
+  }, [])
+
+  return tweetsToSend
 }
 
 const getUserTweets = async (_, args, { user }) => {
@@ -43,6 +66,12 @@ const deleteTweet = async (_, { _id }, { user }) => {
   return Tweet.findByIdAndDelete(_id)
 }
 
+const favoriteTweet = async (_, { _id }, { user }) => {
+  await requireAuth(user)
+  const favorites = await FavoriteTweet.findOne({ userId: user._id })
+  return favorites.userFavoritedTweet(_id)
+}
+
 export default {
   Query: {
     getTweets,
@@ -52,15 +81,18 @@ export default {
   Mutation: {
     createTweet,
     updateTweet,
-    deleteTweet
+    deleteTweet,
+    favoriteTweet
   },
   Tweet: {
     user: async ({ user }) => await User.findById(user._id)
   },
   Subscription: {
     tweetAdded: {
-      // Additional event labels can be passed to asyncIterator creation
       subscribe: () => pubsub.asyncIterator(TWEET_ADDED)
+    },
+    tweetFavorited: {
+      subscribe: () => pubsub.asyncIterator(TWEET_FAVORITED)
     }
   }
 }
