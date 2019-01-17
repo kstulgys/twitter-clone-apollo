@@ -9,28 +9,32 @@ const GET_ME = gql`
     }
   }
 `
-
 const AuthUserContext = React.createContext(null)
 
 export const useAuthUser = () => useContext(AuthUserContext)
 
 function AuthUserProvider({ children, client }) {
-  const [me, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const userToken = localStorage.getItem('token') || ''
+  const [user, setUser] = useState(null)
+  const [loadingUser, setLoading] = useState(true)
 
   const getUserData = async () => {
     const {
       data: { me }
     } = await client.query({ query: GET_ME })
-    setUser(me)
+    // console.log('userData', userData)
+    if (userToken && me) {
+      setUser(me)
+      setLoading(false)
+    }
     setLoading(false)
   }
 
-  const logout = () => {
+  const logoutUser = () => {
     localStorage.removeItem('token')
     setUser(null)
-    setLoading(true)
     client.resetStore()
+    setLoading(true)
   }
 
   useEffect(() => {
@@ -41,12 +45,12 @@ function AuthUserProvider({ children, client }) {
       setLoading(true)
     }
   }, [])
+  // console.log(loadingUser)
 
-  // console.log(user, loading)
   const ctx = {
-    me,
-    loading,
-    logout
+    user,
+    loadingUser,
+    logoutUser
   }
 
   return (

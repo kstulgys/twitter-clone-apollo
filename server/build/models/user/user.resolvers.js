@@ -8,6 +8,10 @@ var _user = require('./user.model');
 
 var _user2 = _interopRequireDefault(_user);
 
+var _favoriteTweet = require('../tweet/favoriteTweet.model');
+
+var _favoriteTweet2 = _interopRequireDefault(_favoriteTweet);
+
 var _auth = require('../../utils/auth');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -27,9 +31,8 @@ const getUsers = (() => {
 const signup = (() => {
   var _ref2 = _asyncToGenerator(function* (_, { email, username, password }) {
     const user = yield _user2.default.create({ email, username, password });
-    return {
-      token: user.createToken()
-    };
+    yield _favoriteTweet2.default.create({ userId: user._id });
+    return { token: yield user.createToken() };
   });
 
   return function signup(_x3, _x4) {

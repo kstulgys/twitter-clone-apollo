@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Query, ApolloProvider } from 'react-apollo'
 import gql from 'graphql-tag'
 import Tweet from './Tweet'
 import Spinner from './Spinner'
 import TweetsSkeleton from './TweetsSkeleton'
+import { useAuthUser } from '../context/authUserContext'
 
 const GET_TWEETS = gql`
   query getTweets {
@@ -11,6 +12,7 @@ const GET_TWEETS = gql`
       text
       _id
       createdAt
+      isFavorited
       favoriteCount
       user {
         username
@@ -33,7 +35,17 @@ const NEW_TWEETS_SUBS = gql`
     }
   }
 `
+const TWEET_FAVORITED_SUBS = gql`
+  subscription {
+    tweetFavorited {
+      _id
+      favoriteCount
+    }
+  }
+`
 function Feed() {
+  // const { user } = useAuthUser()
+
   const subscribeToNewTweets = async ({ subscribeToMore }) => {
     subscribeToMore({
       document: NEW_TWEETS_SUBS,
@@ -51,7 +63,35 @@ function Feed() {
     })
   }
 
-  const subscribeToNewFavorites = async ({ subscribeToMore }) => {}
+  const subscribeToNewFavorites = async ({ subscribeToMore }) => {
+    subscribeToMore({
+      document: TWEET_FAVORITED_SUBS,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+        const favTweet = subscriptionData.data.tweetFavorited
+        return {
+          ...prev,
+          getTweets: prev.getTweets.map(tweet =>
+            tweet._id === favTweet._id
+              ? {
+                  ...tweet,
+                  favoriteCount: favTweet.favoriteCount
+                }
+              : tweet
+          )
+        }
+      }
+    })
+  }
+
+  useEffect(() => {
+    // const sub1 = subscribeToNewTweets
+    // const sub2 = subscribeToNewFavorites
+    // return () => {
+    //   sub1()
+    //   sub2()
+    // }
+  })
 
   return (
     <Query query={GET_TWEETS}>

@@ -13,6 +13,9 @@ import userResolvers from './models/user/user.resolvers'
 
 import createFakeTweets from './mocks/tweet'
 
+import { PubSub } from 'apollo-server'
+export const pubsub = new PubSub()
+
 export const start = async () => {
   const rootSchema = gql`
     type Query {
@@ -29,7 +32,7 @@ export const start = async () => {
     typeDefs: [rootSchema, userSchema, tweetSchema],
     resolvers: merge({}, userResolvers, tweetResolvers),
     async context({ req, connection }) {
-      let user = {}
+      let user = null
 
       if (connection) {
         const re = connection.context.authorization
@@ -37,6 +40,7 @@ export const start = async () => {
       } else {
         user = await authenticate(req)
       }
+      // console.log(user)
       return { user }
     }
     // introspection: true

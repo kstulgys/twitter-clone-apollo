@@ -22,11 +22,12 @@ export default function SignUp() {
             // console.log(signup)
             localStorage.setItem('token', signup.token)
             client.writeData({ data: { isLoggedIn: true } })
+            window.location.reload()
           }}>
           {(signup, { loading, error }) => {
             // this loading state will probably never show, but it's helpful to
             // have for testing
-            if (loading) return <h1>Loading...</h1>
+            if (loading) return <Spinner />
             if (error) return <p>An error occurred</p>
 
             return <SignUpForm signup={signup} />
@@ -51,7 +52,7 @@ function SignUpForm({ signup }) {
     event.preventDefault()
     const { username, email, password } = state
     // console.log(signup, username, email, password)
-    const data = await signup({ variables: { username, email, password } })
+    await signup({ variables: { username, email, password } })
     // console.log(data)
     setState({
       username: '',

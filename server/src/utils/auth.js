@@ -18,35 +18,14 @@ export const requireAuth = async user => {
 }
 
 export const authenticate = async req => {
-  const headersToken = req.headers && req.headers.authorization
-  const contextToken = req.context && req.context.authorization
+  const headersToken = req && req.headers && req.headers.authorization
+  // console.log('headersToken', headersToken)
+  const contextToken = req && req.context && req.context.authorization
+  // console.log('contextToken', contextToken)
   const token = headersToken ? headersToken : contextToken
+  const userToken = token ? token : null
+  // console.log('token is this', userToken)
 
-  let decoded
-  if (token) {
-    decoded = await decodeToken(token)
-  }
-  //// console.log(decoded)
-  return await User.findById(decoded)
+  const decodedUserId = await decodeToken(userToken)
+  return await User.findById(decodedUserId)
 }
-
-//? import cuid from 'cuid'
-
-// export const newApiKey = () => {
-//   return cuid()
-// }
-
-// export const authenticate = async req => {
-//   const userEmail = req.headers.authorization
-
-//   if (!userEmail) {
-//     return
-//   }
-
-//   const user = await User.findOne({ apiKey })
-//     .select('-password')
-//     .lean()
-//     .exec()
-
-//   return user
-// }

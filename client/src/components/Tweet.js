@@ -15,16 +15,7 @@ const FAVORITE_TWEET_MUTATION = gql`
   }
 `
 
-function TweetCard({
-  text,
-  user,
-  createdAt,
-  _id,
-  favoriteCount,
-  favorite,
-  isFavorited,
-  placeholder
-}) {
+function TweetCard({ text, user, createdAt, _id, favoriteCount, isFavorited }) {
   return (
     <div style={{ paddingTop: 10 }}>
       <Card

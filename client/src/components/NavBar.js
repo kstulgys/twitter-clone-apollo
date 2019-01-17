@@ -9,34 +9,31 @@ const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
 const Search = Input.Search
 
-const menu = (
-  <Menu>
-    <Menu.Item>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="http://www.alipay.com/">
-        Tweets
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="http://www.taobao.com/">
-        Following
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
-        Followers
-      </a>
-    </Menu.Item>
-  </Menu>
-)
+function MenuToRender() {
+  return (
+    <Menu>
+      <Menu.Item>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="http://www.alipay.com/">
+          Profile
+        </a>
+      </Menu.Item>
+      <Menu.Item>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="http://www.taobao.com/">
+          Logout
+        </a>
+      </Menu.Item>
+    </Menu>
+  )
+}
 
 function NavBar() {
-  const { me, loading } = useAuthUser()
+  // const { me } = useAuthUser()
   const [current, setCurrent] = useState('home')
   return (
     <>
@@ -61,7 +58,7 @@ function NavBar() {
             </Col>
             <img src={logo} className="App-logo" alt="logo" />
             <Col style={{ display: 'flex' }}>
-              <Dropdown overlay={menu}>
+              <Dropdown overlay={<MenuToRender />}>
                 <Avatar
                   style={{ marginRight: 15 }}
                   src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"

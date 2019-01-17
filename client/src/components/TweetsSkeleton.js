@@ -6,8 +6,8 @@ function TweetsSkeleton() {
     <>
       {Array(5)
         .fill(null)
-        .map(s => (
-          <div style={{ paddingTop: 10 }}>
+        .map((s, i) => (
+          <div key={i} style={{ paddingTop: 10 }}>
             <Card
               style={{
                 margin: 0,

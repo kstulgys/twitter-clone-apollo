@@ -3,17 +3,14 @@ import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import AppLayout from '../AppLayout'
 import Feed from './Feed'
-
-const logedIn = false
+import { useAuthUser } from '../context/authUserContext'
+import Spinner from './Spinner'
 
 function App() {
-  return <AppLayout feed={<Feed />} />
-}
+  const { user, loadingUser } = useAuthUser()
 
-// <ul>
-//   {data &&
-//     data.getTweets &&
-//     data.getTweets.map(t => <li key={t._id}>{t.text}</li>)}
-// </ul>
+  if (loadingUser) return <Spinner />
+  return !loadingUser && user && <AppLayout feed={<Feed />} />
+}
 
 export default App

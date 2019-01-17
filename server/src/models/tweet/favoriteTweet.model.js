@@ -1,8 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
 import Tweet from './tweet.model'
 const ObjectId = require('mongoose').Types.ObjectId
-import { PubSub } from 'apollo-server'
-const pubsub = new PubSub()
+import { pubsub } from '../../server'
 
 const TWEET_FAVORITED = 'tweetFavorited'
 

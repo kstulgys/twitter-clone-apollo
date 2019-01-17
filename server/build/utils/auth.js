@@ -51,40 +51,19 @@ const requireAuth = exports.requireAuth = (() => {
 
 const authenticate = exports.authenticate = (() => {
   var _ref3 = _asyncToGenerator(function* (req) {
-    const headersToken = req.headers && req.headers.authorization;
-    const contextToken = req.context && req.context.authorization;
+    const headersToken = req && req.headers && req.headers.authorization;
+    // console.log('headersToken', headersToken)
+    const contextToken = req && req.context && req.context.authorization;
+    // console.log('contextToken', contextToken)
     const token = headersToken ? headersToken : contextToken;
+    const userToken = token ? token : null;
+    // console.log('token is this', userToken)
 
-    let decoded;
-    if (token) {
-      decoded = yield decodeToken(token);
-    }
-    //// console.log(decoded)
-    return yield _user2.default.findById(decoded);
+    const decodedUserId = yield decodeToken(userToken);
+    return yield _user2.default.findById(decodedUserId);
   });
 
   return function authenticate(_x3) {
     return _ref3.apply(this, arguments);
   };
 })();
-
-//? import cuid from 'cuid'
-
-// export const newApiKey = () => {
-//   return cuid()
-// }
-
-// export const authenticate = async req => {
-//   const userEmail = req.headers.authorization
-
-//   if (!userEmail) {
-//     return
-//   }
-
-//   const user = await User.findOne({ apiKey })
-//     .select('-password')
-//     .lean()
-//     .exec()
-
-//   return user
-// }

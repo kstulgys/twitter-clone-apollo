@@ -8,11 +8,8 @@ const getUsers = async (_, args) => {
 
 const signup = async (_, { email, username, password }) => {
   const user = await User.create({ email, username, password })
-  const favorites = await FavoriteTweet.create({ userId: user._id })
-  // console.log(favorites)
-  return {
-    token: user.createToken()
-  }
+  await FavoriteTweet.create({ userId: user._id })
+  return { token: await user.createToken() }
 }
 
 const login = async (_, { email, password }) => {

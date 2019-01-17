@@ -1,10 +1,8 @@
 import Tweet from './tweet.model'
 import FavoriteTweet from './favoriteTweet.model'
 import User from '../user/user.model'
-
 import { requireAuth } from '../../utils/auth'
-import { PubSub } from 'apollo-server'
-const pubsub = new PubSub()
+import { pubsub } from '../../server'
 
 const TWEET_ADDED = 'tweetAdded'
 const TWEET_FAVORITED = 'tweetFavorited'
@@ -29,7 +27,7 @@ const getTweets = async (_, args, { user }) => {
     }
     return arr
   }, [])
-
+  // console.log(tweetsToSend)
   return tweetsToSend
 }
 

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.start = undefined;
+exports.start = exports.pubsub = undefined;
 
 var _apolloServer = require('apollo-server');
 
@@ -42,6 +42,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 require('dotenv').config();
+const pubsub = exports.pubsub = new _apolloServer.PubSub();
+
 const start = exports.start = (() => {
   var _ref = _asyncToGenerator(function* () {
     const rootSchema = _apolloServer.gql`
@@ -60,7 +62,7 @@ const start = exports.start = (() => {
       resolvers: (0, _lodash.merge)({}, _user4.default, _tweet4.default),
       context({ req, connection }) {
         return _asyncToGenerator(function* () {
-          let user = {};
+          let user = null;
 
           if (connection) {
             const re = connection.context.authorization;
@@ -68,6 +70,7 @@ const start = exports.start = (() => {
           } else {
             user = yield (0, _auth.authenticate)(req);
           }
+          // console.log(user)
           return { user };
         })();
       }
