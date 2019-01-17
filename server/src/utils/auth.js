@@ -23,7 +23,7 @@ export const authenticate = async req => {
   const contextToken = req && req.context && req.context.authorization
   // console.log('contextToken', contextToken)
   const token = headersToken ? headersToken : contextToken
-  const userToken = token ? token : null
+  const userToken = token ? token : ''
   // console.log('token is this', userToken)
 
   const decodedUserId = await decodeToken(userToken)
