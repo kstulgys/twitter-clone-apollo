@@ -22,7 +22,7 @@ export default function SignUp() {
             // console.log(signup)
             localStorage.setItem('token', signup.token)
             client.writeData({ data: { isLoggedIn: true } })
-            window.location.reload()
+            // window.location.reload()
           }}>
           {(signup, { loading, error }) => {
             // this loading state will probably never show, but it's helpful to

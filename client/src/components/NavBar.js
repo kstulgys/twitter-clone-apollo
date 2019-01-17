@@ -10,6 +10,8 @@ const MenuItemGroup = Menu.ItemGroup
 const Search = Input.Search
 
 function MenuToRender() {
+  const { user, logoutUser } = useAuthUser()
+
   return (
     <Menu>
       <Menu.Item>
@@ -21,19 +23,14 @@ function MenuToRender() {
         </a>
       </Menu.Item>
       <Menu.Item>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="http://www.taobao.com/">
-          Logout
-        </a>
+        <a onClick={logoutUser}>Logout</a>
       </Menu.Item>
     </Menu>
   )
 }
 
 function NavBar() {
-  // const { me } = useAuthUser()
+  const { user, logoutUser } = useAuthUser()
   const [current, setCurrent] = useState('home')
   return (
     <>

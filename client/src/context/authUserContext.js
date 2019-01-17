@@ -32,8 +32,9 @@ function AuthUserProvider({ children, client }) {
 
   const logoutUser = () => {
     localStorage.removeItem('token')
+    // client.resetStore()
+    client.writeData({ data: { isLoggedIn: false } })
     setUser(null)
-    client.resetStore()
     setLoading(true)
   }
 
