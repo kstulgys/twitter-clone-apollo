@@ -44,9 +44,9 @@ const TWEET_FAVORITED_SUBS = gql`
   }
 `
 function Feed() {
-  // const { user } = useAuthUser()
-
-  const subscribeToNewTweets = async ({ subscribeToMore }) => {
+  const { user, loadingUser } = useAuthUser()
+  // console.log(user, loadingUser)
+  const subscribeToNewTweets = subscribeToMore => {
     subscribeToMore({
       document: NEW_TWEETS_SUBS,
       updateQuery: (prev, { subscriptionData }) => {
@@ -63,7 +63,7 @@ function Feed() {
     })
   }
 
-  const subscribeToNewFavorites = async ({ subscribeToMore }) => {
+  const subscribeToNewFavorites = subscribeToMore => {
     subscribeToMore({
       document: TWEET_FAVORITED_SUBS,
       updateQuery: (prev, { subscriptionData }) => {
@@ -84,22 +84,18 @@ function Feed() {
     })
   }
 
-  useEffect(() => {
-    // const sub1 = subscribeToNewTweets
-    // const sub2 = subscribeToNewFavorites
-    // return () => {
-    //   sub1()
-    //   sub2()
-    // }
-  })
-
   return (
     <Query query={GET_TWEETS}>
       {({ data, loading, error, fetchMore, subscribeToMore }) => {
         if (error) return <h1>{error.message}</h1>
-        if (loading) return <TweetsSkeleton />
-        subscribeToNewTweets({ subscribeToMore })
-        subscribeToNewFavorites({ subscribeToMore })
+        // console.log('first run', loading, loadingUser, !!user)
+
+        if (loading && loadingUser && !user) return <TweetsSkeleton />
+        // console.log('second run', loading, loadingUser, !!user)
+        // if (data && user) return <TweetsSkeleton />
+
+        subscribeToNewTweets(subscribeToMore)
+        subscribeToNewFavorites(subscribeToMore)
 
         return (
           <>

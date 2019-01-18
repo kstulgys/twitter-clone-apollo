@@ -27,7 +27,7 @@ import { useAuthUser } from './context/authUserContext'
 const userToken = localStorage.getItem('token') || ''
 
 const wsLink = new WebSocketLink({
-  uri: 'wss://twitter-clone-apollo-server.herokuapp.com/graphql',
+  uri: 'ws://localhost:4000/graphql',
   options: {
     reconnect: true,
     connectionParams: {
@@ -37,7 +37,7 @@ const wsLink = new WebSocketLink({
 })
 
 const httpLink = new HttpLink({
-  uri: 'https://twitter-clone-apollo-server.herokuapp.com/graphql',
+  uri: 'http://localhost:4000/graphql',
   headers: {
     authorization: userToken
   }

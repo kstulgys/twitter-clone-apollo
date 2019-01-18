@@ -13,8 +13,8 @@ const AuthUserContext = React.createContext(null)
 
 export const useAuthUser = () => useContext(AuthUserContext)
 
+const userToken = localStorage.getItem('token')
 function AuthUserProvider({ children, client }) {
-  const userToken = localStorage.getItem('token') || ''
   const [user, setUser] = useState(null)
   const [loadingUser, setLoading] = useState(true)
 
@@ -23,29 +23,30 @@ function AuthUserProvider({ children, client }) {
       data: { me }
     } = await client.query({ query: GET_ME })
     // console.log('userData', userData)
-    if (userToken && me) {
-      setUser(me)
-      setLoading(false)
-    }
+
+    setUser(me)
     setLoading(false)
   }
 
   const logoutUser = () => {
     localStorage.removeItem('token')
-    // client.resetStore()
+    client.resetStore()
     client.writeData({ data: { isLoggedIn: false } })
     setUser(null)
     setLoading(true)
   }
 
-  useEffect(() => {
-    getUserData()
-    // clean up
-    return () => {
-      setUser(null)
-      setLoading(true)
-    }
-  }, [])
+  useEffect(
+    () => {
+      getUserData()
+      // clean up
+      // return () => {
+      //   setUser(null)
+      //   setLoading(false)
+      // }
+    },
+    [userToken]
+  )
   // console.log(loadingUser)
 
   const ctx = {

@@ -30,7 +30,7 @@ function MenuToRender() {
 }
 
 function NavBar() {
-  const { user, logoutUser } = useAuthUser()
+  // const { user, logoutUser } = useAuthUser()
   const [current, setCurrent] = useState('home')
   return (
     <>
@@ -71,6 +71,8 @@ function NavBar() {
   )
 }
 
+export default NavBar
+
 // <Menu.Item key="mail">
 // <Icon type="mail" />
 // Message
@@ -92,5 +94,3 @@ function NavBar() {
 //     Navigation Two
 //   </Menu.Item>
 // </Menu>
-
-export default NavBar

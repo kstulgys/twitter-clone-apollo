@@ -17,6 +17,8 @@ import { PubSub } from 'apollo-server'
 export const pubsub = new PubSub()
 
 export const start = async () => {
+  await connect(config.dbUrl)
+  // await createFakeTweets()
   const rootSchema = gql`
     type Query {
       _: Boolean
@@ -32,22 +34,14 @@ export const start = async () => {
     typeDefs: [rootSchema, userSchema, tweetSchema],
     resolvers: merge({}, userResolvers, tweetResolvers),
     async context({ req, connection }) {
-      let user = null
-
-      if (connection) {
-        const re = connection.context.authorization
-        user = await authenticate(connection)
-      } else {
-        user = await authenticate(req)
-      }
+      const request = req || connection
+      const user = await authenticate(request)
       // console.log(user)
       return { user }
     }
     // introspection: true
   })
 
-  await connect(config.dbUrl)
-  // await createFakeTweets()
   const { url } = await server.listen({
     port: process.env.PORT || config.port
     // port: process.env.PORT || config.port

@@ -24,7 +24,6 @@ ObjectId.prototype.valueOf = function() {
 
 favoriteTweetSchema.methods = {
   async userFavoritedTweet(tweetId) {
-    console.log('in userFavoritedTweet')
     if (this.tweets.some(t => t.equals(tweetId))) {
       this.tweets.pull(tweetId)
       await this.save()

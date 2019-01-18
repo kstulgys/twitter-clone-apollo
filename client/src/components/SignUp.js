@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Mutation, ApolloConsumer } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Form, Icon, Input, Button, Checkbox, Row, Col } from 'antd'
@@ -13,24 +13,23 @@ const SIGN_UP = gql`
 `
 
 export default function SignUp() {
+  const handleOnComplete = (signup, client) => {
+    // console.log('signup', signup)
+    localStorage.setItem('token', signup.token)
+    client.writeData({ data: { isLoggedIn: true } })
+  }
+
   return (
     <ApolloConsumer>
       {client => (
         <Mutation
           mutation={SIGN_UP}
-          onCompleted={({ signup }) => {
-            // console.log(signup)
-            localStorage.setItem('token', signup.token)
-            client.writeData({ data: { isLoggedIn: true } })
-            // window.location.reload()
-          }}>
+          onCompleted={({ signup }) => handleOnComplete(signup, client)}>
           {(signup, { loading, error }) => {
             // this loading state will probably never show, but it's helpful to
             // have for testing
-            if (loading) return <Spinner />
             if (error) return <p>An error occurred</p>
-
-            return <SignUpForm signup={signup} />
+            return <SignUpForm loading={loading} signup={signup} />
           }}
         </Mutation>
       )}
@@ -38,7 +37,7 @@ export default function SignUp() {
   )
 }
 
-function SignUpForm({ signup }) {
+function SignUpForm({ signup, loading }) {
   const [state, setState] = useState({
     username: '',
     email: '',
@@ -91,11 +90,13 @@ function SignUpForm({ signup }) {
           </Form.Item>
           <Form.Item>
             <Row type="flex" justify="space-between">
-              <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+              <Button
+                loading={loading}
+                type="primary"
+                htmlType="submit"
+                onClick={handleSubmit}>
                 Sign up
               </Button>
-              <Checkbox>Remember me</Checkbox>
-              <a href="#">Forgot password</a>
             </Row>
           </Form.Item>
         </Form>
@@ -103,3 +104,5 @@ function SignUpForm({ signup }) {
     </Row>
   )
 }
+// <Checkbox>Remember me</Checkbox>
+// <a href="#">Forgot password</a>

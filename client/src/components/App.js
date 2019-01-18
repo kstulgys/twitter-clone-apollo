@@ -7,10 +7,7 @@ import { useAuthUser } from '../context/authUserContext'
 import Spinner from './Spinner'
 
 function App() {
-  const { user, loadingUser } = useAuthUser()
-
-  if (loadingUser) return <Spinner />
-  return !loadingUser && user && <AppLayout feed={<Feed />} />
+  return <AppLayout feed={<Feed />} />
 }
 
 export default App

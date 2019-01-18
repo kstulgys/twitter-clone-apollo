@@ -8,11 +8,12 @@ const TWEET_ADDED = 'tweetAdded'
 const TWEET_FAVORITED = 'tweetFavorited'
 
 const getTweets = async (_, args, { user }) => {
+  await requireAuth(user)
   const p1 = Tweet.find({}).sort({ createdAt: -1 })
   const p2 = FavoriteTweet.findOne({ userId: user._id })
 
   const [tweets, favorites] = await Promise.all([p1, p2])
-  const tweetsToSend = tweets.reduce((arr, tweet) => {
+  const tweetsToSend = await tweets.reduce((arr, tweet) => {
     const tw = tweet.toJSON()
     if (favorites.tweets.some(t => t.equals(tw._id))) {
       arr.push({
@@ -27,7 +28,6 @@ const getTweets = async (_, args, { user }) => {
     }
     return arr
   }, [])
-  // console.log(tweetsToSend)
   return tweetsToSend
 }
 
