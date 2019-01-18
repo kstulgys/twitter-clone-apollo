@@ -25,11 +25,11 @@ export const authenticate = async req => {
   const token = headersToken || contextToken
   console.log('token***********************************', token)
 
-  // const userToken = token ? token : 'invalid token'
-  // console.log('token is this', userToken)
   if (token) {
     const decodedUserId = await decodeToken(token)
-    console.log(decodedUserId)
+    // console.log(decodedUserId)
     return await User.findById(decodedUserId)
+  } else {
+    return
   }
 }

@@ -6,8 +6,16 @@ import jwt from 'jsonwebtoken'
 
 const userSchema = new Schema(
   {
-    username: { type: String, required: true, unique: true, trim: true },
-    password: String,
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      validate: {
+        validator: async username => await User.where({ username }),
+        message: ({ value }) => `User name ${value}, has already been taken`
+      }
+    },
     avatar: String,
     password: String,
     email: String,
@@ -51,7 +59,8 @@ userSchema.methods = {
   }
 }
 
-export default mongoose.model('user', userSchema)
+const User = mongoose.model('user', userSchema)
+export default User
 
 // if (this.isModified('email')) {
 //   this.avatar = `https://api.adorable.io/avatars/285/${this.email}.io.png`

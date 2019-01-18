@@ -39,12 +39,15 @@ export const start = async () => {
       // console.log(user)
       return { user }
     }
+    // formatError: error => {
+    //   console.log(error)
+    //   return new Error('Internal server error')
+    // }
     // introspection: true
   })
 
   const { url } = await server.listen({
     port: process.env.PORT || config.port
-    // port: process.env.PORT || config.port
   })
 
   console.log(`GQL server ready at ${url}`)

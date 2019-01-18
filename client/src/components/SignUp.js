@@ -17,6 +17,7 @@ export default function SignUp() {
     // console.log('signup', signup)
     localStorage.setItem('token', signup.token)
     client.writeData({ data: { isLoggedIn: true } })
+    window.location.reload()
   }
 
   return (
@@ -24,12 +25,12 @@ export default function SignUp() {
       {client => (
         <Mutation
           mutation={SIGN_UP}
-          onCompleted={({ signup }) => handleOnComplete(signup, client)}>
+          onCompleted={({ signup }) => handleOnComplete(signup, client)}
+        >
           {(signup, { loading, error }) => {
-            // this loading state will probably never show, but it's helpful to
-            // have for testing
-            if (error) return <p>An error occurred</p>
-            return <SignUpForm loading={loading} signup={signup} />
+            return (
+              <SignUpForm error={error} loading={loading} signup={signup} />
+            )
           }}
         </Mutation>
       )}
@@ -37,7 +38,7 @@ export default function SignUp() {
   )
 }
 
-function SignUpForm({ signup, loading }) {
+function SignUpForm({ signup, error, loading }) {
   const [state, setState] = useState({
     username: '',
     email: '',
@@ -60,41 +61,45 @@ function SignUpForm({ signup, loading }) {
     })
   }
   return (
-    <Row type="flex" justify="center" style={{ marginTop: 150 }}>
+    <Row type='flex' justify='center' style={{ marginTop: 150 }}>
       <Col span={6}>
         <Form>
-          <Form.Item>
+          <Form.Item
+            validateStatus={error && 'error'}
+            help={error && error.message}
+          >
             <Input
-              prefix={<Icon type="user" />}
-              placeholder="Username"
-              id="username"
+              prefix={<Icon type='user' />}
+              placeholder='Username'
+              id='username'
               onChange={handleChange}
             />
           </Form.Item>
           <Form.Item>
             <Input
-              prefix={<Icon type="mail" />}
-              placeholder="Email"
-              id="email"
+              prefix={<Icon type='mail' />}
+              placeholder='Email'
+              id='email'
               onChange={handleChange}
             />
           </Form.Item>
           <Form.Item>
             <Input
-              prefix={<Icon type="lock" />}
-              type="password"
-              placeholder="Password"
-              id="password"
+              prefix={<Icon type='lock' />}
+              type='password'
+              placeholder='Password'
+              id='password'
               onChange={handleChange}
             />
           </Form.Item>
           <Form.Item>
-            <Row type="flex" justify="space-between">
+            <Row type='flex' justify='space-between'>
               <Button
                 loading={loading}
-                type="primary"
-                htmlType="submit"
-                onClick={handleSubmit}>
+                type='primary'
+                htmlType='submit'
+                onClick={handleSubmit}
+              >
                 Sign up
               </Button>
             </Row>

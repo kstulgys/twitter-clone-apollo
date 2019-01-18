@@ -88,11 +88,7 @@ function Feed() {
     <Query query={GET_TWEETS}>
       {({ data, loading, error, fetchMore, subscribeToMore }) => {
         if (error) return <h1>{error.message}</h1>
-        // console.log('first run', loading, loadingUser, !!user)
-
-        if (loading && loadingUser && !user) return <TweetsSkeleton />
-        // console.log('second run', loading, loadingUser, !!user)
-        // if (data && user) return <TweetsSkeleton />
+        if (loading || loadingUser || !user) return <TweetsSkeleton />
 
         subscribeToNewTweets(subscribeToMore)
         subscribeToNewFavorites(subscribeToMore)

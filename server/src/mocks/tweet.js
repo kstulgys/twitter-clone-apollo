@@ -11,7 +11,7 @@ export default async () => {
 
   await Array(10)
     .fill(null)
-    .forEach(async (_, i) => {
+    .forEach(async i => {
       const user = await User.create({
         username: faker.internet.userName(),
         email: faker.internet.email(),

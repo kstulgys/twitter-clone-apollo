@@ -13,7 +13,6 @@ const AuthUserContext = React.createContext(null)
 
 export const useAuthUser = () => useContext(AuthUserContext)
 
-const userToken = localStorage.getItem('token')
 function AuthUserProvider({ children, client }) {
   const [user, setUser] = useState(null)
   const [loadingUser, setLoading] = useState(true)
@@ -22,8 +21,6 @@ function AuthUserProvider({ children, client }) {
     const {
       data: { me }
     } = await client.query({ query: GET_ME })
-    // console.log('userData', userData)
-
     setUser(me)
     setLoading(false)
   }
@@ -36,18 +33,9 @@ function AuthUserProvider({ children, client }) {
     setLoading(true)
   }
 
-  useEffect(
-    () => {
-      getUserData()
-      // clean up
-      // return () => {
-      //   setUser(null)
-      //   setLoading(false)
-      // }
-    },
-    [userToken]
-  )
-  // console.log(loadingUser)
+  useEffect(() => {
+    getUserData()
+  }, [])
 
   const ctx = {
     user,
