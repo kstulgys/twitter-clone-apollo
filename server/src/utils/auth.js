@@ -23,11 +23,9 @@ export const authenticate = async req => {
   const contextToken = req.context && req.context.authorization
   // console.log('contextToken', contextToken)
   const token = headersToken || contextToken
-  console.log('token***********************************', token)
 
   if (token) {
     const decodedUserId = await decodeToken(token)
-    // console.log(decodedUserId)
     return await User.findById(decodedUserId)
   } else {
     return

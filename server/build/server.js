@@ -46,6 +46,8 @@ const pubsub = exports.pubsub = new _apolloServer.PubSub();
 
 const start = exports.start = (() => {
   var _ref = _asyncToGenerator(function* () {
+    yield (0, _db.connect)(_config2.default.dbUrl);
+    // await createFakeTweets()
     const rootSchema = _apolloServer.gql`
     type Query {
       _: Boolean
@@ -62,26 +64,21 @@ const start = exports.start = (() => {
       resolvers: (0, _lodash.merge)({}, _user4.default, _tweet4.default),
       context({ req, connection }) {
         return _asyncToGenerator(function* () {
-          let user = null;
-
-          if (connection) {
-            const re = connection.context.authorization;
-            user = yield (0, _auth.authenticate)(connection);
-          } else {
-            user = yield (0, _auth.authenticate)(req);
-          }
-          // console.log(user)
+          const request = req || connection;
+          let user = yield (0, _auth.authenticate)(request);
+          user = user && user;
           return { user };
         })();
       }
+      // formatError: error => {
+      //   console.log(error)
+      //   return new Error('Internal server error')
+      // }
       // introspection: true
     });
 
-    yield (0, _db.connect)(_config2.default.dbUrl);
-    // await createFakeTweets()
     const { url } = yield server.listen({
       port: process.env.PORT || _config2.default.port
-      // port: process.env.PORT || config.port
     });
 
     console.log(`GQL server ready at ${url}`);

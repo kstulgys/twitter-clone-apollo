@@ -7,6 +7,17 @@ const getUsers = async (_, args) => {
 }
 
 const signup = async (_, { email, username, password }) => {
+  const userWithUsername = await User.findOne({ username })
+  const userWithEmail = await User.findOne({ email })
+
+  if (userWithUsername) {
+    throw new Error('username is taken')
+  }
+
+  if (userWithEmail) {
+    throw new Error('email is taken, please login')
+  }
+
   const user = await User.create({ email, username, password })
   await FavoriteTweet.create({ userId: user._id })
   return { token: await user.createToken() }
@@ -21,7 +32,7 @@ const login = async (_, { email, password }) => {
     throw new Error('Password does not match')
   }
   return {
-    token: user.createToken()
+    token: await user.createToken()
   }
 }
 

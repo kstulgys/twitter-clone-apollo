@@ -35,8 +35,8 @@ export const start = async () => {
     resolvers: merge({}, userResolvers, tweetResolvers),
     async context({ req, connection }) {
       const request = req || connection
-      const user = await authenticate(request)
-      // console.log(user)
+      let user = await authenticate(request)
+      user = user && user
       return { user }
     }
     // formatError: error => {

@@ -17,13 +17,11 @@ import { getMainDefinition } from 'apollo-utilities'
 
 import App from './components/App'
 import { resolvers, typeDefs } from './resolvers'
-import LoginPage from './components/SignUp'
+import AuthUserForm from './components/AuthUserForm'
 import AuthUserProvider from './context/authUserContext'
 
 import LoginRoute from './LoginRoute'
 import ProtectedRoute from './ProtectedRoute'
-
-// import { useAuthUser } from './context/authUserContext'
 
 ///localhost:4000/
 // uri: 'wss://twitter-clone-apollo-server.herokuapp.com/graphql',
@@ -70,22 +68,22 @@ const client = new ApolloClient({
   typeDefs
 })
 
-const IS_LOGGED_IN = gql`
-  query IsUserLoggedIn {
-    isLoggedIn @client
-  }
-`
+// const IS_LOGGED_IN = gql`
+//   query IsUserLoggedIn {
+//     isLoggedIn @client
+//   }
+// `
 
 function RootApp() {
   return (
     <ApolloProvider client={client}>
       <AuthUserProvider client={client} userToken={userToken}>
         <BrowserRouter>
-          <div className='App'>
+          <div className="App">
             <Switch>
-              <LoginRoute exact path='/auth' component={LoginPage} />
-              <ProtectedRoute exact path='/' component={App} />
-              <Route path='*' render={props => <Redirect to='/' />} />
+              <LoginRoute exact path="/auth" component={AuthUserForm} />
+              <ProtectedRoute exact path="/" component={App} />
+              <Route path="*" render={props => <Redirect to="/" />} />
             </Switch>
           </div>
         </BrowserRouter>

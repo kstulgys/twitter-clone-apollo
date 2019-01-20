@@ -15,11 +15,7 @@ function MenuToRender() {
   return (
     <Menu>
       <Menu.Item>
-        <a
-          target='_blank'
-          rel='noopener noreferrer'
-          href='http://www.alipay.com/'
-        >
+        <a target="_blank" rel="noopener noreferrer" href="#">
           Profile
         </a>
       </Menu.Item>
@@ -36,35 +32,33 @@ function NavBar() {
   return (
     <>
       <Row
-        type='flex'
-        align='middle'
-        justify='center'
-        style={{ backgroundColor: 'white' }}
-      >
+        type="flex"
+        align="middle"
+        justify="center"
+        style={{ backgroundColor: 'white' }}>
         <Col lg={2} md={2} sm={1} xs={0} />
         <Col lg={20} md={19} sm={20} xs={23}>
-          <Row type='flex' align='middle' justify='space-between'>
+          <Row type="flex" align="middle" justify="space-between">
             <Col>
               <Menu
                 onClick={setCurrent}
                 selectedKeys={[current]}
-                mode='horizontal'
-              >
-                <Menu.Item key='home'>
-                  <Icon type='home' />
+                mode="horizontal">
+                <Menu.Item key="home">
+                  <Icon type="home" />
                   Home
                 </Menu.Item>
               </Menu>
             </Col>
-            <img src={logo} className='App-logo' alt='logo' />
+            <img src={logo} className="App-logo" alt="logo" />
             <Col style={{ display: 'flex' }}>
               <Dropdown overlay={<MenuToRender />}>
                 <Avatar
                   style={{ marginRight: 15 }}
-                  src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
                 />
               </Dropdown>
-              <Button onClick={TweetModal}>Tweet</Button>
+              <TweetModal />
             </Col>
           </Row>
         </Col>

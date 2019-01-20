@@ -51,16 +51,18 @@ const requireAuth = exports.requireAuth = (() => {
 
 const authenticate = exports.authenticate = (() => {
   var _ref3 = _asyncToGenerator(function* (req) {
-    const headersToken = req && req.headers && req.headers.authorization;
+    const headersToken = req.headers && req.headers.authorization;
     // console.log('headersToken', headersToken)
-    const contextToken = req && req.context && req.context.authorization;
+    const contextToken = req.context && req.context.authorization;
     // console.log('contextToken', contextToken)
-    const token = headersToken ? headersToken : contextToken;
-    const userToken = token ? token : '';
-    // console.log('token is this', userToken)
+    const token = headersToken || contextToken;
 
-    const decodedUserId = yield decodeToken(userToken);
-    return yield _user2.default.findById(decodedUserId);
+    if (token) {
+      const decodedUserId = yield decodeToken(token);
+      return yield _user2.default.findById(decodedUserId);
+    } else {
+      return;
+    }
   });
 
   return function authenticate(_x3) {

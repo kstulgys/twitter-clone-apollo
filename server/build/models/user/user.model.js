@@ -20,12 +20,30 @@ var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 const ObjectId = require('mongoose').Types.ObjectId;
 
 
 const userSchema = new _mongoose.Schema({
-  username: { type: String, required: true, unique: true, trim: true },
-  password: String,
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    validate: {
+      validator: (() => {
+        var _ref = _asyncToGenerator(function* (username) {
+          return yield User.where({ username });
+        });
+
+        return function validator(_x) {
+          return _ref.apply(this, arguments);
+        };
+      })(),
+      message: ({ value }) => `User name ${value}, has already been taken`
+    }
+  },
   avatar: String,
   password: String,
   email: String,
@@ -64,7 +82,8 @@ userSchema.methods = {
   }
 };
 
-exports.default = _mongoose2.default.model('user', userSchema);
+const User = _mongoose2.default.model('user', userSchema);
+exports.default = User;
 
 // if (this.isModified('email')) {
 //   this.avatar = `https://api.adorable.io/avatars/285/${this.email}.io.png`

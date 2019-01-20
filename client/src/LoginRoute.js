@@ -5,20 +5,11 @@ import { useAuthUser } from './context/authUserContext'
 
 export default function LoginRoute({ component: Component, ...rest }) {
   const { user, userLoading } = useAuthUser()
-  // let mounted = false
 
-  // useEffect(() => {
-  //   mounted = true
-  //   return () => {
-  //     mounted = false
-  //   }
-  // }, [])
-  // console.log(mounted)
+  if (userLoading) return null
   if (!user && !userLoading)
     return <Route render={props => <Component {...rest} />} />
-
   if (user && !userLoading)
-    return <Route render={props => <Redirect to='/' />} />
-
+    return <Route render={props => <Redirect to="/" />} />
   return null
 }

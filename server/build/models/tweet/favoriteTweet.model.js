@@ -45,7 +45,6 @@ favoriteTweetSchema.methods = {
     var _this = this;
 
     return _asyncToGenerator(function* () {
-      console.log('in userFavoritedTweet');
       if (_this.tweets.some(function (t) {
         return t.equals(tweetId);
       })) {

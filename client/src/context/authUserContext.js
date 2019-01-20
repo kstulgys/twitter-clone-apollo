@@ -15,33 +15,34 @@ export const useAuthUser = () => useContext(AuthUserContext)
 
 function AuthUserProvider({ children, client }) {
   const [user, setUser] = useState(null)
-  const [userLoading, setLoading] = useState(false)
+  const [userLoading, setLoading] = useState(true)
   // const [userloggedin, setLoggedIn] = useState(false)
 
   const tryToLoginUser = async () => {
-    setLoading(true)
     try {
       const {
         data: { me }
       } = await client.query({ query: GET_ME })
       setUser(me)
       setLoading(false)
+      // window.location.reload()
     } catch (e) {
       setLoading(false)
     }
   }
 
-  const loginUser = async token => {
+  const signupOrLoginUser = token => {
     setLoading(true)
-    await localStorage.setItem('token', token)
-    await tryToLoginUser()
-    setLoading(false)
+    localStorage.setItem('token', token)
+    tryToLoginUser()
     window.location.reload()
+    setLoading(false)
   }
 
   const logoutUser = async () => {
-    await localStorage.removeItem('token')
-    await client.resetStore()
+    setLoading(true)
+    localStorage.removeItem('token')
+    client.resetStore()
     setUser(null)
     setLoading(false)
   }
@@ -53,11 +54,9 @@ function AuthUserProvider({ children, client }) {
   const ctx = {
     user,
     userLoading,
-    loginUser,
+    signupOrLoginUser,
     logoutUser
   }
-
-  console.log(user)
 
   return (
     <AuthUserContext.Provider value={ctx}>{children}</AuthUserContext.Provider>

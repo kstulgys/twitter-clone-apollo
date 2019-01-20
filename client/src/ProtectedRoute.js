@@ -7,10 +7,10 @@ import { useAuthUser } from './context/authUserContext'
 export default function ProtectedRoute({ component: Component, ...rest }) {
   const { user, userLoading } = useAuthUser()
 
+  if (userLoading) return null
   if (user && !userLoading)
     return <Route render={props => <Component {...rest} />} />
   if (!user && !userLoading)
-    return <Route render={props => <Redirect to='/auth' />} />
-
+    return <Route render={props => <Redirect to="/auth" />} />
   return null
 }

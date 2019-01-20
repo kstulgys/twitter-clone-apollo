@@ -33,11 +33,12 @@ const TWEET_FAVORITED = 'tweetFavorited';
 
 const getTweets = (() => {
   var _ref = _asyncToGenerator(function* (_, args, { user }) {
+    yield (0, _auth.requireAuth)(user);
     const p1 = _tweet2.default.find({}).sort({ createdAt: -1 });
     const p2 = _favoriteTweet2.default.findOne({ userId: user._id });
 
     const [tweets, favorites] = yield Promise.all([p1, p2]);
-    const tweetsToSend = tweets.reduce(function (arr, tweet) {
+    const tweetsToSend = yield tweets.reduce(function (arr, tweet) {
       const tw = tweet.toJSON();
       if (favorites.tweets.some(function (t) {
         return t.equals(tw._id);
@@ -52,7 +53,6 @@ const getTweets = (() => {
       }
       return arr;
     }, []);
-    // console.log(tweetsToSend)
     return tweetsToSend;
   });
 

@@ -30,6 +30,17 @@ const getUsers = (() => {
 
 const signup = (() => {
   var _ref2 = _asyncToGenerator(function* (_, { email, username, password }) {
+    const userWithUsername = yield _user2.default.findOne({ username });
+    const userWithEmail = yield _user2.default.findOne({ email });
+
+    if (userWithUsername) {
+      throw new Error('username is taken');
+    }
+
+    if (userWithEmail) {
+      throw new Error('email is taken, please login');
+    }
+
     const user = yield _user2.default.create({ email, username, password });
     yield _favoriteTweet2.default.create({ userId: user._id });
     return { token: yield user.createToken() };
@@ -50,7 +61,7 @@ const login = (() => {
       throw new Error('Password does not match');
     }
     return {
-      token: user.createToken()
+      token: yield user.createToken()
     };
   });
 
