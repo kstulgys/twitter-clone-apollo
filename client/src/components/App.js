@@ -1,13 +1,25 @@
 import React from 'react'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
-import AppLayout from '../AppLayout'
+import { Row, Col, Card } from 'antd'
 import Feed from './Feed'
-import { useAuthUser } from '../context/authUserContext'
-import Spinner from './Spinner'
+import NavBar from './NavBar'
 
-function App() {
-  return <AppLayout feed={<Feed />} />
+function AppLayout() {
+  return (
+    <>
+      <NavBar />
+      <Row type='flex' justify='center' gutter={8}>
+        <Col lg={5} md={6} sm={0} xs={0} style={{ paddingTop: 10 }}>
+          <Card>Sidebar Left</Card>
+        </Col>
+        <Col lg={10} md={13} sm={20} xs={23}>
+          <Feed />
+        </Col>
+        <Col lg={5} md={0} sm={0} xs={0} style={{ paddingTop: 10 }}>
+          <Card>Sidebar Right</Card>
+        </Col>
+      </Row>
+    </>
+  )
 }
 
-export default App
+export default AppLayout

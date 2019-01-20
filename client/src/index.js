@@ -3,6 +3,8 @@ import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+
 import createNetworkInterface, { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
@@ -15,10 +17,13 @@ import { getMainDefinition } from 'apollo-utilities'
 
 import App from './components/App'
 import { resolvers, typeDefs } from './resolvers'
-import SignUp from './components/SignUp'
+import LoginPage from './components/SignUp'
 import AuthUserProvider from './context/authUserContext'
 
-import { useAuthUser } from './context/authUserContext'
+import LoginRoute from './LoginRoute'
+import ProtectedRoute from './ProtectedRoute'
+
+// import { useAuthUser } from './context/authUserContext'
 
 ///localhost:4000/
 // uri: 'wss://twitter-clone-apollo-server.herokuapp.com/graphql',
@@ -71,19 +76,37 @@ const IS_LOGGED_IN = gql`
   }
 `
 
-function Root() {
+function RootApp() {
   return (
     <ApolloProvider client={client}>
-      <AuthUserProvider client={client}>
-        <Query query={IS_LOGGED_IN}>
-          {({ data }) => (data.isLoggedIn ? <App /> : <SignUp />)}
-        </Query>
+      <AuthUserProvider client={client} userToken={userToken}>
+        <BrowserRouter>
+          <div className='App'>
+            <Switch>
+              <LoginRoute exact path='/auth' component={LoginPage} />
+              <ProtectedRoute exact path='/' component={App} />
+              <Route path='*' render={props => <Redirect to='/' />} />
+            </Switch>
+          </div>
+        </BrowserRouter>
       </AuthUserProvider>
     </ApolloProvider>
   )
 }
 
-ReactDOM.render(<Root />, document.getElementById('root'))
+ReactDOM.render(<RootApp />, document.getElementById('root'))
+
+// function Root() {
+//   return (
+//     <ApolloProvider client={client}>
+//       <AuthUserProvider client={client}>
+//         <Query query={IS_LOGGED_IN}>
+//           {({ data }) => (data.isLoggedIn ? <App /> : <SignUp />)}
+//         </Query>
+//       </AuthUserProvider>
+//     </ApolloProvider>
+//   )
+// }
 
 // <ApolloProvider client={client}>
 // <AuthUserProvider client={client}>

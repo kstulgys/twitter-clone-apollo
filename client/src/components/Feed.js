@@ -44,7 +44,7 @@ const TWEET_FAVORITED_SUBS = gql`
   }
 `
 function Feed() {
-  const { user, loadingUser } = useAuthUser()
+  const { user, userLoading, loginUser, logoutUser } = useAuthUser()
   // console.log(user, loadingUser)
   const subscribeToNewTweets = subscribeToMore => {
     subscribeToMore({
@@ -83,12 +83,12 @@ function Feed() {
       }
     })
   }
-
+  // user, userLoading, loginUser, logoutUser
   return (
     <Query query={GET_TWEETS}>
       {({ data, loading, error, fetchMore, subscribeToMore }) => {
         if (error) return <h1>{error.message}</h1>
-        if (loading || loadingUser || !user) return <TweetsSkeleton />
+        if (loading || userLoading || !user) return <TweetsSkeleton />
 
         subscribeToNewTweets(subscribeToMore)
         subscribeToNewFavorites(subscribeToMore)

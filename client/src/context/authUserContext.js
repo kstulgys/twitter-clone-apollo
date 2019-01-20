@@ -15,33 +15,49 @@ export const useAuthUser = () => useContext(AuthUserContext)
 
 function AuthUserProvider({ children, client }) {
   const [user, setUser] = useState(null)
-  const [loadingUser, setLoading] = useState(true)
+  const [userLoading, setLoading] = useState(false)
+  // const [userloggedin, setLoggedIn] = useState(false)
 
-  const getUserData = async () => {
-    const {
-      data: { me }
-    } = await client.query({ query: GET_ME })
-    setUser(me)
+  const tryToLoginUser = async () => {
+    setLoading(true)
+    try {
+      const {
+        data: { me }
+      } = await client.query({ query: GET_ME })
+      setUser(me)
+      setLoading(false)
+    } catch (e) {
+      setLoading(false)
+    }
+  }
+
+  const loginUser = async token => {
+    setLoading(true)
+    await localStorage.setItem('token', token)
+    await tryToLoginUser()
+    setLoading(false)
+    window.location.reload()
+  }
+
+  const logoutUser = async () => {
+    await localStorage.removeItem('token')
+    await client.resetStore()
+    setUser(null)
     setLoading(false)
   }
 
-  const logoutUser = () => {
-    localStorage.removeItem('token')
-    client.resetStore()
-    client.writeData({ data: { isLoggedIn: false } })
-    setUser(null)
-    setLoading(true)
-  }
-
   useEffect(() => {
-    getUserData()
+    tryToLoginUser()
   }, [])
 
   const ctx = {
     user,
-    loadingUser,
+    userLoading,
+    loginUser,
     logoutUser
   }
+
+  console.log(user)
 
   return (
     <AuthUserContext.Provider value={ctx}>{children}</AuthUserContext.Provider>

@@ -3,6 +3,7 @@ import { Mutation, ApolloConsumer } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Form, Icon, Input, Button, Checkbox, Row, Col } from 'antd'
 import Spinner from './Spinner'
+import { useAuthUser } from '../context/authUserContext'
 
 const SIGN_UP = gql`
   mutation signup($username: String!, $email: String!, $password: String!) {
@@ -13,19 +14,20 @@ const SIGN_UP = gql`
 `
 
 export default function SignUp() {
-  const handleOnComplete = (signup, client) => {
-    // console.log('signup', signup)
-    localStorage.setItem('token', signup.token)
-    client.writeData({ data: { isLoggedIn: true } })
-    window.location.reload()
-  }
+  const { loginUser } = useAuthUser()
+
+  //   const handleOnComplete = (signup, client) => {
+  //     loginUser({ signup })
+  //     // client.writeData({ data: { isLoggedIn: true } })
+  //     // window.location.reload()
+  //   }
 
   return (
     <ApolloConsumer>
       {client => (
         <Mutation
           mutation={SIGN_UP}
-          onCompleted={({ signup }) => handleOnComplete(signup, client)}
+          onCompleted={({ signup: { token } }) => loginUser(token)}
         >
           {(signup, { loading, error }) => {
             return (
